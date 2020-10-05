@@ -95,12 +95,12 @@ public class UIPanel : MonoBehaviour
         }
     }
 
-    public void OpenOther(UIElement other)
+    public void OpenOther(UIPanel other)
     {
-        other.Show();
+        other.Open();
     }
 
-    public void CloseAndOpenOther(UIElement other)
+    public void CloseAndOpenOther(UIPanel other)
     {
         Close();
         OpenOther(other);
