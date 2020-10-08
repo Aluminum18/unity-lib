@@ -103,6 +103,14 @@ public class UIPanel : MonoBehaviour
         {
             return;
         }
+
+        // panel is on top, pop it.
+        // if it is not on top, just close and it will be pop later
+        if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
+        {
+            _uiController.PopFromStack();
+        }
+
         transform.SetAsFirstSibling();
 
         _rayCaster.enabled = false;
@@ -113,7 +121,6 @@ public class UIPanel : MonoBehaviour
         }
 
         IsOpening = false;
-        _uiController.PopFromStack();
     }
 
     public void OpenOther(UIPanel other)

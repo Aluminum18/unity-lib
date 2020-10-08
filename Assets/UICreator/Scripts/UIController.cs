@@ -23,6 +23,11 @@ public class UIController : MonoBehaviour
 
     public void PopFromStack()
     {
+        if (_panelStack.Count == 0)
+        {
+            return;
+        }
+
         _panelStack.Pop();
 
         if (_panelStack.Count == 0)
