@@ -7,6 +7,40 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private List<UIPanel> _UIPanels;
 
+    // Store UI panel following opening order
+    private Stack<UIPanel> _panelStack = new Stack<UIPanel>();
+
+    public void PushToStack(UIPanel panel)
+    {
+        if (_panelStack.Count > 0)
+        {
+            var recentPanel = _panelStack.Peek();
+            recentPanel.SetInteractable(!recentPanel.IsOpening);
+        }
+
+        _panelStack.Push(panel);
+    }
+
+    public void PopFromStack()
+    {
+        _panelStack.Pop();
+
+        if (_panelStack.Count == 0)
+        {
+            return;
+        }
+
+        var recentPanel = _panelStack.Peek();
+        if (recentPanel.IsOpening)
+        {
+            recentPanel.SetInteractable(true);
+        }
+        else
+        {
+            PopFromStack();
+        }
+    }
+
     private void Start()
     {
         InitAllUIPanels();
@@ -23,7 +57,7 @@ public class UIController : MonoBehaviour
                 continue;
             }
 
-            panel.Init();
+            panel.Init(this);
 
             if (panel.ShowFromStart)
             {

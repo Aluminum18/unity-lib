@@ -18,8 +18,11 @@ public class UIPanel : MonoBehaviour
     [SerializeField]
     private UnityEvent _onAllElementsHided;
 
+    private UIController _uiController;
     private Canvas _canvas;
     private GraphicRaycaster _rayCaster;
+
+    public bool IsOpening { get; set; }
 
     [SerializeField]
     private int _showedElements = 0;
@@ -32,7 +35,7 @@ public class UIPanel : MonoBehaviour
         }
     }
 
-    public void Init()
+    public void Init(UIController controller)
     {
         _canvas = GetComponent<Canvas>();
         if (_canvas == null)
@@ -51,6 +54,8 @@ public class UIPanel : MonoBehaviour
             _rayCaster.enabled = false;
         }
 
+        _uiController = controller;
+
         if (!ValidateElements())
         {
             return;
@@ -66,6 +71,11 @@ public class UIPanel : MonoBehaviour
 
     public void Open()
     {
+        if (IsOpening)
+        {
+            return;
+        }
+
         if (!ValidateElements())
         {
             return;
@@ -77,10 +87,18 @@ public class UIPanel : MonoBehaviour
         {
             _elements[i].Show();
         }
+
+        IsOpening = true;
+        _uiController.PushToStack(this);
     }
 
     public void Close()
     {
+        if (!IsOpening)
+        {
+            return;
+        }
+
         if (!ValidateElements())
         {
             return;
@@ -93,6 +111,9 @@ public class UIPanel : MonoBehaviour
         {
             _elements[i].Hide();
         }
+
+        IsOpening = false;
+        _uiController.PopFromStack();
     }
 
     public void OpenOther(UIPanel other)
@@ -124,6 +145,11 @@ public class UIPanel : MonoBehaviour
             _canvas.enabled = false;
             _onAllElementsHided?.Invoke();
         }
+    }
+
+    public void SetInteractable(bool interactable)
+    {
+        _rayCaster.enabled = interactable;
     }
 
     private bool ValidateElements()
