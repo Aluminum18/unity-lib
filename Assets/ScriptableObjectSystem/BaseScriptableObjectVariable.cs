@@ -22,7 +22,7 @@ public class BaseScriptableObjectVariable <T> : ScriptableObject
             {
                 return;
             }
-            value = _value;
+            _value = value;
 
             OnValueChange?.Invoke(value);
         }
