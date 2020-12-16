@@ -27,6 +27,11 @@ public class ChangeSceneRequester : MonoSingleton<ChangeSceneRequester>
 
     public void ChangeScene(string sceneName)
     {
+        if (SceneManager.GetActiveScene().name == sceneName)
+        {
+            return;
+        }
+
         _nextSceneName = sceneName;
         if (_transitionObjects.Count == 0)
         {

@@ -12,6 +12,15 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<T>();
+                if (_instance == null)
+                {
+                    var go = new GameObject(typeof(T).ToString());
+                    _instance = go.AddComponent<T>();
+                }
+            }
             return _instance;
         }
     }
@@ -43,7 +52,6 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 
     private void Awake()
     {
-        _instance = GetComponent<T>();
         T[] singletons = FindObjectsOfType<T>();
         if (singletons.Length > 1)
         {

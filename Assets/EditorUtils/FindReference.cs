@@ -67,8 +67,8 @@ public static class FindReference
             Object fieldObj = (Object)field;
 
             if (fieldObj.GetInstanceID().Equals(obj.GetInstanceID()))
-            {
-                Debug.Log($"Reference in [{component.gameObject.name}]", component.gameObject);
+            {               
+                Debug.Log($"Reference in component [{component.GetType().ToString()}] in object [{component.name}]", component.gameObject);
             }
         }
     }

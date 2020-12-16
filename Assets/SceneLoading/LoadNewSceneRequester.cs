@@ -11,4 +11,9 @@ public class LoadNewSceneRequester : MonoBehaviour
     {
         ChangeSceneRequester.Instance.ChangeScene(_nextScene);
     }
+
+    public void LoadNextSceneWithName(string sceneName)
+    {
+        ChangeSceneRequester.Instance.ChangeScene(sceneName);
+    }
 }
