@@ -111,8 +111,6 @@ public class UIPanel : MonoBehaviour
             _uiController.PopFromStack();
         }
 
-        transform.SetAsFirstSibling();
-
         _rayCaster.enabled = false;
 
         for (int i = 0; i < _elements.Count; i++)
@@ -151,6 +149,7 @@ public class UIPanel : MonoBehaviour
         {
             _canvas.enabled = false;
             _onAllElementsHided?.Invoke();
+            transform.SetAsFirstSibling();
         }
     }
 

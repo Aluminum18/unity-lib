@@ -91,7 +91,7 @@ public class UITransition : MonoBehaviour
                 }
             case TransitionType.Move:
                 {
-                    hideDescription = LeanTween.moveLocal(gameObject, _from, _hideTransitionTime);
+                    hideDescription = LeanTween.moveLocal(gameObject, _from, _hideTransitionTime).setEase(_hideLeanTweenType);
                     break;
                 }
             case TransitionType.Zoom:
