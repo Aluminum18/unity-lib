@@ -24,7 +24,7 @@ public class BaseScriptableObjectVariable <T> : ScriptableObject
             }
             _value = value;
 
-            OnValueChange?.Invoke(value);
+            OnValueChange?.Invoke(value);           
         }
     }
 

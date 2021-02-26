@@ -33,4 +33,11 @@ public class Vector3VariableToPosition : MonoBehaviour
     {
         _targetVariable.OnValueChange -= UpdatePosition;
     }
+
+#if UNITY_EDITOR
+    private void Update()
+    {
+        UpdatePosition(_targetVariable.Value);
+    }
+#endif
 }

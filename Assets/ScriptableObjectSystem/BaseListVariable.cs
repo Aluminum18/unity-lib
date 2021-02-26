@@ -88,7 +88,7 @@ public abstract class BaseListVariable<T> : ScriptableObject
 
         LastRemove = item;
 
-        OnListChanged.Invoke();
+        OnListChanged?.Invoke();
     }
 
     public void UpdateValueAt(int idx, T newValue)
@@ -119,5 +119,10 @@ public abstract class BaseListVariable<T> : ScriptableObject
     protected virtual bool Compare(T item1, T item2)
     {
         return false;
-    }  
+    }
+
+    private void OnDisable()
+    {
+        _list.Clear();
+    }
 }
