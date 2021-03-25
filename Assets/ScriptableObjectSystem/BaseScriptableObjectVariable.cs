@@ -6,6 +6,10 @@ public class BaseScriptableObjectVariable <T> : ScriptableObject
 {
     [SerializeField]
     protected T _value;
+    [SerializeField]
+    protected T _defaultValue;
+    [SerializeField]
+    protected ScriptableObjectValueInit _valueWhenInit;
 
     public delegate void OnValueChangedDel(T newValue);
     public event OnValueChangedDel OnValueChange;
@@ -32,4 +36,26 @@ public class BaseScriptableObjectVariable <T> : ScriptableObject
     {
         return true;
     }
+
+    private void OnEnable()
+    {
+        switch (_valueWhenInit)
+        {
+            case ScriptableObjectValueInit.KeepCurrentOnEnable:
+                {
+                    break;
+                }
+            case ScriptableObjectValueInit.UseDefault:
+                {
+                    _value = _defaultValue;
+                    break;
+                }
+        }
+    }
+}
+
+public enum ScriptableObjectValueInit
+{
+    KeepCurrentOnEnable = 0,
+    UseDefault = 1
 }

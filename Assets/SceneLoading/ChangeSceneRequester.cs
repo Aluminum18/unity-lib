@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -33,18 +34,7 @@ public class ChangeSceneRequester : MonoSingleton<ChangeSceneRequester>
         }
 
         _nextSceneName = sceneName;
-        if (_transitionObjects.Count == 0)
-        {
-            Debug.LogWarning("No transition objects found, load with no transition!");
-            LoadScene();
-            return;
-        }
-
-        for (int i = 0; i < _transitionObjects.Count; i++)
-        {
-            var transitionObj = _transitionObjects[i];
-            transitionObj.DoCloseSceneAnim(_closeSceneDuration);
-        }
+        CloseTransition();
     }
 
     private void LoadScene()
@@ -63,11 +53,30 @@ public class ChangeSceneRequester : MonoSingleton<ChangeSceneRequester>
         {
             return;
         }
+        // Delay 3 frame for smooth animation, first frame offen handles heavy tasks
+        Observable.TimerFrame(3).Subscribe(_ =>
+        {
+            for (int i = 0; i < _transitionObjects.Count; i++)
+            {
+                var transitionObj = _transitionObjects[i];
+                transitionObj.DoOpenSceneAnim(_openSceneDuration);
+            }
+        });
+    }
+
+    private void CloseTransition()
+    {
+        if (_transitionObjects.Count == 0)
+        {
+            Debug.LogWarning("No transition objects found, load with no transition!");
+            LoadScene();
+            return;
+        }
 
         for (int i = 0; i < _transitionObjects.Count; i++)
         {
             var transitionObj = _transitionObjects[i];
-            transitionObj.DoOpenSceneAnim(_openSceneDuration);
+            transitionObj.DoCloseSceneAnim(_closeSceneDuration);
         }
     }
 

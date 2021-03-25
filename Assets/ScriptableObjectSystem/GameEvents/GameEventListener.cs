@@ -12,17 +12,31 @@ public class GameEventListener : MonoBehaviour
 
     private void OnEnable()
     {
+        if (_gameEvent == null)
+        {
+            return;
+        }
 
         _gameEvent.Subcribe(HandleEvent);
     }
 
     private void OnDisable()
     {
+        if (_gameEvent == null)
+        {
+            return;
+        }
+
         _gameEvent.Unsubcribe(HandleEvent);
     }
 
     private void HandleEvent(params object[] args)
     {
+        if (_gameEvent == null)
+        {
+            return;
+        }
+
         _handler.Invoke();
     }
 }

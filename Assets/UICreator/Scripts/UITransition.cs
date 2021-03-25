@@ -35,12 +35,16 @@ public class UITransition : MonoBehaviour
     private WaitForSeconds _waitForshowDuration;
     private WaitForSeconds _waitForHideDuration;
 
+    private CanvasGroup _canvasGroup;
+
     public void Init(UIPanel parent)
     {
         _parentPanel = parent;
 
         _waitForshowDuration = new WaitForSeconds(_showTransitionTime);
         _waitForHideDuration = new WaitForSeconds(_hideTransitionTime);
+        _canvasGroup = GetComponent<CanvasGroup>();
+
     }
 
     public void ShowTransition()
@@ -52,8 +56,13 @@ public class UITransition : MonoBehaviour
         {
             case TransitionType.Fade:
                 {
-                    LeanTween.alpha(gameObject, _from.x, 0);
-                    showDescription = LeanTween.alpha(gameObject, _to.x, _showTransitionTime);
+                    if (_canvasGroup == null)
+                    {
+                        return;
+                    }
+
+                    LeanTween.alphaCanvas(_canvasGroup, _from.x, 0);
+                    showDescription = LeanTween.alphaCanvas(_canvasGroup, _to.x, _showTransitionTime);
                     break;
                 }
             case TransitionType.Move:
@@ -86,7 +95,12 @@ public class UITransition : MonoBehaviour
         {
             case TransitionType.Fade:
                 {
-                    hideDescription = LeanTween.alpha(gameObject, _from.x, _hideTransitionTime);
+                    if (_canvasGroup == null)
+                    {
+                        return;
+                    }
+
+                    hideDescription = LeanTween.alphaCanvas(_canvasGroup, _from.x, _hideTransitionTime);
                     break;
                 }
             case TransitionType.Move:
