@@ -27,6 +27,8 @@ public class UIPanel : MonoBehaviour
     [SerializeField]
     private int _showedElements = 0;
 
+    private UIPanel _showNextAfterThisHide;
+
     public bool ShowFromStart
     {
         get
@@ -121,15 +123,11 @@ public class UIPanel : MonoBehaviour
         IsOpening = false;
     }
 
-    public void OpenOther(UIPanel other)
-    {
-        other.Open();
-    }
-
     public void CloseAndOpenOther(UIPanel other)
     {
         Close();
-        OpenOther(other);
+
+        _showNextAfterThisHide = other;
     }
 
     public void NotifyElementShowed()
@@ -145,12 +143,22 @@ public class UIPanel : MonoBehaviour
     public void NotifyElementHided()
     {
         _showedElements--;
-        if (_showedElements == 0)
+        if (_showedElements != 0)
         {
-            _canvas.enabled = false;
-            _onAllElementsHided?.Invoke();
-            transform.SetAsFirstSibling();
+            return;
         }
+
+        _canvas.enabled = false;
+        _onAllElementsHided?.Invoke();
+        transform.SetAsFirstSibling();
+
+        if (_showNextAfterThisHide == null)
+        {
+            return;
+        }
+
+        _showNextAfterThisHide.Open();
+        _showNextAfterThisHide = null;
     }
 
     public void SetInteractable(bool interactable)
