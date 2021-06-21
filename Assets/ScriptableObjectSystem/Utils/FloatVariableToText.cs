@@ -1,62 +1,56 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UniRx;
 
-public class IntegerVariableToText : MonoBehaviour
+public class FloatVariableToText : MonoBehaviour
 {
     [SerializeField]
-    private IntegerVariable _intVariable;
+    private FloatVariable _floatVariable;
     [SerializeField]
     private TMP_Text _textMesh;
     [SerializeField]
-    private bool _continueUpdate = true;
-    [SerializeField]
     private bool _continuousChange = false;
     [SerializeField]
-    private int _unitChangePerSec = 5;
+    private float _unitChangePerSec;
     [SerializeField]
-    private float _continuousChangeCapTime = 1f;
+    private float _continuousChangeCapTime;
     [SerializeField]
-    private string _format = "{0}";
+    private string _format = "0.0";
+    [SerializeField]
+    private string _additionFormat = "{0}";
 
     private CompositeDisposable _cd = new CompositeDisposable();
+    private float _lastValue;
 
-    private int _lastValue = 0;
-    private void OnEnable()
+    private void Start()
     {
-        UpdateValue(_intVariable.Value);
-        
-        if (_continueUpdate)
-        {
-            _intVariable.OnValueChange += UpdateValue;
-        }
+        _textMesh.text = string.Format(_additionFormat, _floatVariable.Value.ToString(_format));
+        _floatVariable.OnValueChange += UpdateValue;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        if (_continueUpdate)
-        {
-            _intVariable.OnValueChange -= UpdateValue;
-        }
+        _floatVariable.OnValueChange -= UpdateValue;
     }
 
-    private void UpdateValue(int newValue)
+    private void UpdateValue(float newValue)
     {
         if (_continuousChange)
         {
             ContinuousUpdateValue(newValue);
             return;
         }
-        _textMesh.text = string.Format(_format, newValue.ToString());
+
+        _textMesh.text = string.Format(_additionFormat, _floatVariable.Value.ToString(_format));
     }
 
-    private void ContinuousUpdateValue(int newValue)
+    private void ContinuousUpdateValue(float newValue)
     {
         _cd.Clear();
 
-        int diff = newValue - _lastValue;
+        float diff = newValue - _lastValue;
 
-        float expectedTime = (float)(Mathf.Abs(diff)) / _unitChangePerSec;
+        float expectedTime = Mathf.Abs(diff) / _unitChangePerSec;
 
         float changePerSec = _unitChangePerSec * Mathf.Sign(diff);
         if (expectedTime > _continuousChangeCapTime)
@@ -73,11 +67,11 @@ public class IntegerVariableToText : MonoBehaviour
             bufferValue += changePerSec * Time.deltaTime;
             if (expectedTime < 0f)
             {
-                _textMesh.text = string.Format(_format, newValue.ToString());
+                _textMesh.text = string.Format(_additionFormat, _floatVariable.Value.ToString(_format));
                 _cd.Clear();
                 return;
             }
-            _textMesh.text = string.Format(_format, ((int)bufferValue).ToString());
+            _textMesh.text = string.Format(_additionFormat, bufferValue.ToString(_format));
             expectedTime -= Time.deltaTime;
         }).AddTo(_cd);
     }

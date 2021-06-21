@@ -20,4 +20,10 @@ public class IntegerVariable : BaseScriptableObjectVariable<int>
             return _change;
         }
     }
+
+    public void Increase(int increase)
+    {
+        Value += increase;
+    }
+
 }

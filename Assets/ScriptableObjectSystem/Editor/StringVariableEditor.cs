@@ -1,10 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using UnityEditor;
 
-[CustomEditor(typeof(FloatVariable))]
-public class FloatVariableEditor : Editor
+[CustomEditor(typeof(StringVariable))]
+public class StringVariableEditor : Editor
 {
     private SerializedProperty _value;
 
@@ -18,8 +18,8 @@ public class FloatVariableEditor : Editor
         DrawDefaultInspector();
         EditorGUILayout.PropertyField(_value);
 
-        var myTarget = (FloatVariable)target;
-        myTarget.Value = _value.floatValue;
+        var myTarget = (StringVariable)target;
+        myTarget.Value = _value.stringValue;
 
         serializedObject.ApplyModifiedProperties();
     }

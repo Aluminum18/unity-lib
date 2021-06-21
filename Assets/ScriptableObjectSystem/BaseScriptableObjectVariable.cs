@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BaseScriptableObjectVariable <T> : ScriptableObject
 {
+    [HideInInspector]
     [SerializeField]
     protected T _value;
     [SerializeField]

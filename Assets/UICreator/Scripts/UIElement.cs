@@ -27,8 +27,8 @@ public class UIElement : MonoBehaviour
         }
         _transition.Init(container);
 
-        _waitForHideDelay = new WaitForSeconds(_showDelay);
-        _waitForShowDelay = new WaitForSeconds(_hideDelay);
+        _waitForHideDelay = new WaitForSeconds(_hideDelay);
+        _waitForShowDelay = new WaitForSeconds(_showDelay);
     }
 
     public void Show()
@@ -43,6 +43,7 @@ public class UIElement : MonoBehaviour
 
     private IEnumerator IE_Show()
     {
+        _transition?.PreShowSetup();
         yield return _waitForShowDelay;
         if (_transition == null)
         {

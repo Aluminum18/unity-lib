@@ -15,10 +15,12 @@ public class IntegerVariableEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        serializedObject.Update();
+        DrawDefaultInspector();
         EditorGUILayout.PropertyField(_value);
 
         var myTarget = (IntegerVariable)target;
         myTarget.Value = _value.intValue;
+
+        serializedObject.ApplyModifiedProperties();
     }
 }

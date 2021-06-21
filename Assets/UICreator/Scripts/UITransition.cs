@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(UIElement))]
@@ -23,6 +25,15 @@ public class UITransition : MonoBehaviour
     private float _hideTransitionTime;
     [SerializeField]
     private LeanTweenType _hideLeanTweenType;
+
+    [SerializeField]
+    private UnityEvent _onStartShow;
+    [SerializeField]
+    private UnityEvent _onFinishShow;
+    [SerializeField]
+    private UnityEvent _onStartHide;
+    [SerializeField]
+    private UnityEvent _onFinishHide;
 
     private UIPanel _parentPanel;
 
@@ -47,8 +58,46 @@ public class UITransition : MonoBehaviour
 
     }
 
+    public void PreShowSetup()
+    {
+        switch (_transitionType)
+        {
+            case TransitionType.Fade:
+                {
+                    if (_canvasGroup == null)
+                    {
+                        Debug.LogWarning("In order to use Fade Transition, add CanvasGroup Component to this object", this);
+                        return;
+                    }
+
+                    LeanTween.alphaCanvas(_canvasGroup, _from.x, 0);
+                    break;
+                }
+            case TransitionType.Move:
+                {
+                    transform.localPosition = _from;
+                    break;
+                }
+            case TransitionType.Zoom:
+                {
+                    transform.localScale = _from;
+                    break;
+                }
+            default:
+                {
+                    return;
+                }
+        }
+    }
+
     public void ShowTransition()
     {
+        _onStartHide.Invoke();
+        Observable.Timer(System.TimeSpan.FromSeconds(_showTransitionTime)).Subscribe(_ =>
+        {
+            _onFinishShow.Invoke();
+        });
+
         StartCoroutine(IE_NotifyShown());
 
         LTDescr showDescription;
@@ -58,6 +107,7 @@ public class UITransition : MonoBehaviour
                 {
                     if (_canvasGroup == null)
                     {
+                        Debug.LogWarning("In order to use Fade Transition, add CanvasGroup Component to this object", this);
                         return;
                     }
 
@@ -88,6 +138,12 @@ public class UITransition : MonoBehaviour
 
     public void HideTransition()
     {
+        _onStartHide.Invoke();
+        Observable.Timer(System.TimeSpan.FromSeconds(_hideTransitionTime)).Subscribe(_ =>
+        {
+            _onFinishHide.Invoke();
+        });
+
         StartCoroutine(IE_NotifyHided());
 
         LTDescr hideDescription;
@@ -97,6 +153,7 @@ public class UITransition : MonoBehaviour
                 {
                     if (_canvasGroup == null)
                     {
+                        Debug.LogWarning("In order to use Fade Transition, add CanvasGroup Component to this object", this);
                         return;
                     }
 
