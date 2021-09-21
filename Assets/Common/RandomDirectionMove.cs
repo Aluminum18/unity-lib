@@ -53,7 +53,7 @@ public class RandomDirectionMove : MonoBehaviour
         _random = randomPoint;
 
         _onStartMove.Invoke();
-        LeanTween.move(_movedTransform.gameObject, randomPoint, _moveTime);
+        LeanTween.move(_movedTransform.gameObject, randomPoint, _moveTime).setEase(_easeType);
 
         Observable.Timer(System.TimeSpan.FromSeconds(_moveTime)).Subscribe(_ =>
         {

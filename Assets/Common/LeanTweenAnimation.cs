@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class LeanTweenAnimation : MonoBehaviour
 {
@@ -15,12 +17,24 @@ public class LeanTweenAnimation : MonoBehaviour
     private LeanTweenType _tweenType;
     [SerializeField]
     private float _duration;
+    public float Duration
+    {
+        set
+        {
+            _duration = value;
+        }
+    }
     [SerializeField]
     private bool _useCurrentAsFrom = false;
     [SerializeField]
     private Vector3 _from;
     [SerializeField]
     private Vector3 _to;
+
+    [SerializeField]
+    private UnityEvent _onStartTween;
+    [SerializeField]
+    private UnityEvent _onFinishTween;
 
     public enum AnimType
     {
@@ -29,8 +43,10 @@ public class LeanTweenAnimation : MonoBehaviour
         Zoom,
         FadeSprite,
         FadeUI,
-        MoveLocal
+        MoveLocal,
+        RotateLocal
     }
+
     public void DoTweenWithDelay(float delay)
     {
         Observable.Timer(System.TimeSpan.FromSeconds(delay)).Subscribe(_ =>
@@ -45,6 +61,13 @@ public class LeanTweenAnimation : MonoBehaviour
         {
             _go = gameObject;
         }
+
+        _onStartTween.Invoke();
+
+        Observable.Timer(System.TimeSpan.FromSeconds(_duration)).Subscribe(_ =>
+        {
+            _onFinishTween.Invoke();
+        });
 
         switch (_animType)
         {
@@ -91,12 +114,35 @@ public class LeanTweenAnimation : MonoBehaviour
                         spriteRenderer.color = bufferColor;
                     }
 
-                    LeanTween.alpha(_go, _to.x, _duration);
+                    LeanTween.alpha(_go, _to.x, _duration).setEase(_tweenType);
                     break;
                 }
             case AnimType.FadeUI:
                 {
-                    //later
+                    var canvasGroup = _go.GetComponent<CanvasGroup>();
+
+                    if (canvasGroup == null)
+                    {
+                        Debug.LogWarning("To use FadeUI, add CanvasGroup component to the target");
+                        return;
+                    }
+
+                    if (!_useCurrentAsFrom)
+                    {
+                        canvasGroup.alpha = _from.x;
+                    }
+
+                    LeanTween.alphaCanvas(canvasGroup, _to.x, _duration).setEase(_tweenType);
+                    break;
+                }
+            case AnimType.RotateLocal:
+                {
+                    if (!_useCurrentAsFrom)
+                    {
+                        _go.transform.localRotation = Quaternion.Euler(_from);
+                    }
+
+                    LeanTween.rotateLocal(_go, _to, _duration).setEase(_tweenType);
                     break;
                 }
             default:
