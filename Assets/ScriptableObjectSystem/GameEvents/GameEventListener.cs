@@ -17,6 +17,10 @@ public class GameEventListener : MonoBehaviour
             return;
         }
 
+#if UNITY_EDITOR
+        _gameEvent.SubcribeEditor(HandleEvent, gameObject.name);
+        return;
+#endif
         _gameEvent.Subcribe(HandleEvent);
     }
 
@@ -27,6 +31,10 @@ public class GameEventListener : MonoBehaviour
             return;
         }
 
+#if UNITY_EDITOR
+        _gameEvent.UnsubcribeEditor(HandleEvent, gameObject.name);
+        return;
+#endif
         _gameEvent.Unsubcribe(HandleEvent);
     }
 

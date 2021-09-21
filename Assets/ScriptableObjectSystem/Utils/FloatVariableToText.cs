@@ -11,26 +11,41 @@ public class FloatVariableToText : MonoBehaviour
     [SerializeField]
     private bool _continuousChange = false;
     [SerializeField]
-    private float _unitChangePerSec;
+    private float _unitChangePerSec = 5f;
     [SerializeField]
-    private float _continuousChangeCapTime;
+    private float _continuousChangeCapTime = 1f;
     [SerializeField]
     private string _format = "0.0";
     [SerializeField]
     private string _additionFormat = "{0}";
+    [SerializeField]
+    private bool _convertToDateTime;
+    [SerializeField]
+    private string _dateTimeFormat = "hh\\:mm\\:ss\\:fff";
 
     private CompositeDisposable _cd = new CompositeDisposable();
     private float _lastValue;
 
     private void Start()
     {
-        _textMesh.text = string.Format(_additionFormat, _floatVariable.Value.ToString(_format));
+        SetValueText(_floatVariable.Value);
         _floatVariable.OnValueChange += UpdateValue;
     }
 
     private void OnDestroy()
     {
         _floatVariable.OnValueChange -= UpdateValue;
+    }
+
+    private void SetValueText(float value)
+    {
+        if (_convertToDateTime)
+        {
+            var ts = System.TimeSpan.FromSeconds(value);
+            _textMesh.text = string.Format(_additionFormat, ts.ToString(@_dateTimeFormat));
+            return;
+        }
+        _textMesh.text = string.Format(_additionFormat, value.ToString(_format));
     }
 
     private void UpdateValue(float newValue)
@@ -41,7 +56,7 @@ public class FloatVariableToText : MonoBehaviour
             return;
         }
 
-        _textMesh.text = string.Format(_additionFormat, _floatVariable.Value.ToString(_format));
+        SetValueText(_floatVariable.Value);
     }
 
     private void ContinuousUpdateValue(float newValue)
@@ -67,11 +82,11 @@ public class FloatVariableToText : MonoBehaviour
             bufferValue += changePerSec * Time.deltaTime;
             if (expectedTime < 0f)
             {
-                _textMesh.text = string.Format(_additionFormat, _floatVariable.Value.ToString(_format));
+                SetValueText(_floatVariable.Value);
                 _cd.Clear();
                 return;
             }
-            _textMesh.text = string.Format(_additionFormat, bufferValue.ToString(_format));
+            SetValueText(bufferValue);
             expectedTime -= Time.deltaTime;
         }).AddTo(_cd);
     }

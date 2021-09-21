@@ -62,5 +62,17 @@ public class GameEvent : ScriptableObject
     {
         _subcribers.Clear();
     }
+
+    public void SubcribeEditor(EventActionDel action, string subcriber)
+    {
+        _eventAction += action;
+        _subcribers.Add(subcriber);
+    }
+
+    public void UnsubcribeEditor(EventActionDel action, string subcriber)
+    {
+        _eventAction -= action;
+        _subcribers.Remove(subcriber);
+    }
 #endif
 }

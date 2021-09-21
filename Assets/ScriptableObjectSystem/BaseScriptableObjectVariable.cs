@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BaseScriptableObjectVariable <T> : ScriptableObject
 {
+    [TextArea(1, 10)]
+    public string Explanation;
+
     [HideInInspector]
     [SerializeField]
     protected T _value;

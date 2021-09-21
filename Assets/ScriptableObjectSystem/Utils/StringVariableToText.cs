@@ -7,6 +7,18 @@ public class StringVariableToText : MonoBehaviour
     private StringVariable _stringVariable;
     [SerializeField]
     private TMP_Text _textMesh;
+    [SerializeField]
+    private bool _continueUpdate = true;
+
+    public void SetText(string text)
+    {
+        _textMesh.text = text;
+    }
+
+    public void SetText(StringVariable text)
+    {
+        _textMesh.text = text.Value;
+    }
 
     private void OnEnable()
     {
@@ -21,6 +33,11 @@ public class StringVariableToText : MonoBehaviour
 
     private void UpdateStringValue(string newValue)
     {
+        if (!_continueUpdate)
+        {
+            return;
+        }
+
         if (newValue.Equals(_textMesh.text))
         {
             return;

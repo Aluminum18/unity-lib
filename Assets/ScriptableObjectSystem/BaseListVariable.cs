@@ -5,9 +5,11 @@ using UnityEngine;
 public abstract class BaseListVariable<T> : ScriptableObject
 {
     [SerializeField]
-    protected List<T> _list = new List<T>();
-    [SerializeField]
     protected bool _dontDuplicateValue = false;
+    [SerializeField]
+    protected bool _dontClearOnDisable = false;
+    [SerializeField]
+    protected List<T> _list = new List<T>();
 
     public T LastAdd { get; private set; }
     public T LastRemove { get; private set; }
@@ -123,6 +125,21 @@ public abstract class BaseListVariable<T> : ScriptableObject
 
     private void OnDisable()
     {
+        if (_dontClearOnDisable)
+        {
+            return;
+        }
+
+        _list.Clear();
+    }
+
+    private void OnEnable()
+    {
+        if (_dontClearOnDisable)
+        {
+            return;
+        }
+
         _list.Clear();
     }
 }
