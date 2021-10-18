@@ -15,6 +15,11 @@ public class EventRaiseThrottle : MonoBehaviour
     [SerializeField]
     private float _timeUntilNextEvent;
 
+    public void SetThrottle(float throttle)
+    {
+        _throttle = throttle;
+    }
+
     private CompositeDisposable _cd = new CompositeDisposable();
     private void OnEnable()
     {

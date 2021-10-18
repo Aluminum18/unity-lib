@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
-public class UIController : Singleton<UIController>
+public class UIController : MonoBehaviour
 {
     [SerializeField]
     private List<UIPanel> _UIPanels;
@@ -66,66 +67,12 @@ public class UIController : Singleton<UIController>
 
             if (panel.ShowFromStart)
             {
-                panel.Open();
+                // the init frame handles very 
+                Observable.TimerFrame(2).Subscribe(_ =>
+                {
+                    panel.Open();
+                });
             }
-        }
-    }
-
-    public void InitUIPanels(List<UIPanel> panels)
-    {
-        for (int i = 0; i < panels.Count; i++)
-        {
-            var panel = panels[i];
-            if (panel == null)
-            {
-                // Log
-                continue;
-            }
-
-            panel.Init(this);
-
-            if (panel.ShowFromStart)
-            {
-                panel.Open();
-            }
-        }
-    }
-
-    public void InitUIPanel(UIPanel panel)
-    {
-        if (panel == null)
-        {
-            // Log
-            return;
-        }
-
-        panel.Init(this);
-
-        if (panel.ShowFromStart)
-        {
-            panel.Open();
-        }
-    }
-
-    public void CloseLastPanel()
-    {
-        if (_panelStack.Count == 0)
-        {
-            return;
-        }
-
-        var recentPanel = _panelStack.Peek();
-        if (recentPanel.IsOpening)
-        {
-            recentPanel.Close();
-        }
-    }
-
-    public void CloseAllPanel()
-    {
-        foreach (var item in _panelStack)
-        {
-            item.Close();
         }
     }
 }

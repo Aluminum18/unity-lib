@@ -14,6 +14,8 @@ public class UIPanel : MonoBehaviour
 
     [Header("UnityEvents")]
     [SerializeField]
+    private UnityEvent _onStartShow;
+    [SerializeField]
     private UnityEvent _onAllElementsShown;
     [SerializeField]
     private UnityEvent _onAllElementsHided;
@@ -34,6 +36,41 @@ public class UIPanel : MonoBehaviour
         get
         {
             return _showFromStart;
+        }
+    }
+
+    /// <summary>
+    /// Used by alternative flow, check Menu in StartMenu Scene for detail
+    /// </summary>
+    public void Init()
+    {
+        _canvas = GetComponent<Canvas>();
+        if (_canvas == null)
+        {
+            Debug.LogError($"Missing canvas of [{gameObject.name}]", this);
+            return;
+        }
+
+        _rayCaster = GetComponent<GraphicRaycaster>();
+        if (_rayCaster == null)
+        {
+            Debug.LogWarning($"Missing graphic raycaster of [{gameObject.name}]", this);
+        }
+        else
+        {
+            _rayCaster.enabled = false;
+        }
+
+        if (!ValidateElements())
+        {
+            return;
+        }
+
+        _canvas.enabled = false;
+
+        for (int i = 0; i < _elements.Count; i++)
+        {
+            _elements[i].Init(this);
         }
     }
 
@@ -85,13 +122,15 @@ public class UIPanel : MonoBehaviour
 
         _canvas.enabled = true;
         transform.SetAsLastSibling();
+
+        _onStartShow.Invoke();
         for (int i = 0; i < _elements.Count; i++)
         {
             _elements[i].Show();
         }
 
         IsOpening = true;
-        _uiController.PushToStack(this);
+        _uiController?.PushToStack(this);
     }
 
     public void Close()
@@ -110,7 +149,7 @@ public class UIPanel : MonoBehaviour
         // if it is not on top, just close and it will be pop later
         if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
         {
-            _uiController.PopFromStack();
+            _uiController?.PopFromStack();
         }
 
         _rayCaster.enabled = false;
@@ -164,6 +203,11 @@ public class UIPanel : MonoBehaviour
     public void SetInteractable(bool interactable)
     {
         _rayCaster.enabled = interactable;
+    }
+
+    public void SetMoveToFront()
+    {
+        transform.SetAsLastSibling();
     }
 
     private bool ValidateElements()
