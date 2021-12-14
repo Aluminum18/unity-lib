@@ -39,41 +39,6 @@ public class UIPanel : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Used by alternative flow, check Menu in StartMenu Scene for detail
-    /// </summary>
-    public void Init()
-    {
-        _canvas = GetComponent<Canvas>();
-        if (_canvas == null)
-        {
-            Debug.LogError($"Missing canvas of [{gameObject.name}]", this);
-            return;
-        }
-
-        _rayCaster = GetComponent<GraphicRaycaster>();
-        if (_rayCaster == null)
-        {
-            Debug.LogWarning($"Missing graphic raycaster of [{gameObject.name}]", this);
-        }
-        else
-        {
-            _rayCaster.enabled = false;
-        }
-
-        if (!ValidateElements())
-        {
-            return;
-        }
-
-        _canvas.enabled = false;
-
-        for (int i = 0; i < _elements.Count; i++)
-        {
-            _elements[i].Init(this);
-        }
-    }
-
     public void Init(UIController controller)
     {
         _canvas = GetComponent<Canvas>();
