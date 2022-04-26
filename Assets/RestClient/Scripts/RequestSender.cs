@@ -93,12 +93,12 @@ public class RequestSender : MonoBehaviour
 
             yield return request.SendWebRequest();
 
-            if (request.isHttpError)
+            if (request.result == UnityWebRequest.Result.ProtocolError)
             {
                 failedCallback?.Invoke();
                 yield break;
             }
-            if (request.isNetworkError)
+            if (request.result == UnityWebRequest.Result.ConnectionError)
             {
                 networkErrorCallback?.Invoke();
                 yield break;
@@ -126,12 +126,12 @@ public class RequestSender : MonoBehaviour
             }
             yield return request.SendWebRequest();
 
-            if (request.isHttpError)
+            if (request.result == UnityWebRequest.Result.ProtocolError)
             {
                 failedCallback?.Invoke();
                 yield break;
             }
-            if (request.isNetworkError)
+            if (request.result == UnityWebRequest.Result.ConnectionError)
             {
                 networkErrorCallback?.Invoke();
                 yield break;
