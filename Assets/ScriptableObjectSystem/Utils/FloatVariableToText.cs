@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using TMPro;
-using UniRx;
+using Cysharp.Threading.Tasks.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public class FloatVariableToText : MonoBehaviour
 {
@@ -23,7 +25,8 @@ public class FloatVariableToText : MonoBehaviour
     [SerializeField]
     private string _dateTimeFormat = "hh\\:mm\\:ss\\:fff";
 
-    private CompositeDisposable _cd = new CompositeDisposable();
+    private CancellationTokenSource _updateToken;
+
     private float _lastValue;
 
     private void Start()
@@ -52,17 +55,15 @@ public class FloatVariableToText : MonoBehaviour
     {
         if (_continuousChange)
         {
-            ContinuousUpdateValue(newValue);
+            ContinuousUpdateValue(newValue).Forget();
             return;
         }
 
         SetValueText(_floatVariable.Value);
     }
 
-    private void ContinuousUpdateValue(float newValue)
+    private async UniTaskVoid ContinuousUpdateValue(float newValue)
     {
-        _cd.Clear();
-
         float diff = newValue - _lastValue;
 
         float expectedTime = Mathf.Abs(diff) / _unitChangePerSec;
@@ -77,17 +78,19 @@ public class FloatVariableToText : MonoBehaviour
         float bufferValue = _lastValue;
         _lastValue = newValue;
 
-        Observable.EveryUpdate().Subscribe(_ =>
+        _updateToken.Cancel();
+        _updateToken = new CancellationTokenSource();
+
+        await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(_updateToken.Token))
         {
             bufferValue += changePerSec * Time.deltaTime;
             if (expectedTime < 0f)
             {
                 SetValueText(_floatVariable.Value);
-                _cd.Clear();
                 return;
             }
             SetValueText(bufferValue);
             expectedTime -= Time.deltaTime;
-        }).AddTo(_cd);
+        }
     }
 }

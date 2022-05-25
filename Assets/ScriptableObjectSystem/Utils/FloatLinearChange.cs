@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UniRx;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -23,64 +25,67 @@ public class FloatLinearChange : MonoBehaviour
     [SerializeField]
     private UnityEvent _onFinishChange;
 
+    private CancellationTokenSource _updateToken;
+
     public enum ChangeType
     {
         Increase,
         Decrease
     }
 
-    private IDisposable _changeStream;
-
     public void AutoChangeBySpeed()
     {
         if (_changeType == ChangeType.Increase)
         {
-            AutoIncreaseBySpeed();
+            AutoIncreaseBySpeed().Forget();
             return;
         }
 
-        AutoDecreaseBySpeed();
+        AutoDecreaseBySpeed().Forget();
     }
 
-    private void AutoDecreaseBySpeed()
+    private async UniTaskVoid AutoDecreaseBySpeed()
     {
-        _changeStream?.Dispose();
-
         _changedValue.Value = _refValueSO == null ? _refValue : _refValueSO.Value;
 
-        _changeStream = Observable.EveryUpdate().Subscribe(_ =>
+        _updateToken.Cancel();
+        _updateToken = new CancellationTokenSource();
+
+        await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(_updateToken.Token))
         {
             if (_changedValue.Value <= 0f)
             {
                 _changedValue.Value = 0f;
-                _changeStream.Dispose();
                 _onFinishChange.Invoke();
-                return;
-            }
 
+                _updateToken.Cancel();
+                break;
+            }
             _changedValue.Value -= _changeSpeed * Time.deltaTime;
-        });
+        }
     }
 
-    private void AutoIncreaseBySpeed()
+    private async UniTaskVoid AutoIncreaseBySpeed()
     {
-        _changeStream?.Dispose();
-
         float targetValue = _refValueSO == null ? _refValue : _refValueSO.Value;
         _changedValue.Value = 0f;
 
-        _changeStream = Observable.EveryUpdate().Subscribe(_ =>
+        _updateToken.Cancel();
+        _updateToken = new CancellationTokenSource();
+
+        await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(_updateToken.Token))
         {
             if (_changedValue.Value >= targetValue)
             {
                 _changedValue.Value = targetValue;
-                _changeStream.Dispose();
                 _onFinishChange.Invoke();
-                return;
+
+                _updateToken.Cancel();
+                break;
             }
 
             _changedValue.Value += _changeSpeed * Time.deltaTime;
-        });
+        }
     }
 
     private void OnEnable()

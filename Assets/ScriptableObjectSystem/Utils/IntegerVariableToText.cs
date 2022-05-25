@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
-using UniRx;
+using Cysharp.Threading.Tasks.Linq;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class IntegerVariableToText : MonoBehaviour
 {
@@ -19,7 +21,7 @@ public class IntegerVariableToText : MonoBehaviour
     [SerializeField]
     private string _format = "{0}";
 
-    private CompositeDisposable _cd = new CompositeDisposable();
+    private CancellationTokenSource _updateToken;
 
     private int _lastValue = 0;
     private void OnEnable()
@@ -44,16 +46,14 @@ public class IntegerVariableToText : MonoBehaviour
     {
         if (_continuousChange)
         {
-            ContinuousUpdateValue(newValue);
+            ContinuousUpdateValue(newValue).Forget();
             return;
         }
         _textMesh.text = string.Format(_format, newValue.ToString());
     }
 
-    private void ContinuousUpdateValue(int newValue)
+    private async UniTaskVoid ContinuousUpdateValue(int newValue)
     {
-        _cd.Clear();
-
         int diff = newValue - _lastValue;
 
         float expectedTime = (float)(Mathf.Abs(diff)) / _unitChangePerSec;
@@ -68,17 +68,19 @@ public class IntegerVariableToText : MonoBehaviour
         float bufferValue = _lastValue;
         _lastValue = newValue;
 
-        Observable.EveryUpdate().Subscribe(_ =>
+        _updateToken.Cancel();
+        _updateToken = new CancellationTokenSource();
+
+        await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(_updateToken.Token))
         {
             bufferValue += changePerSec * Time.deltaTime;
             if (expectedTime < 0f)
             {
                 _textMesh.text = string.Format(_format, newValue.ToString());
-                _cd.Clear();
                 return;
             }
             _textMesh.text = string.Format(_format, ((int)bufferValue).ToString());
             expectedTime -= Time.deltaTime;
-        }).AddTo(_cd);
+        }
     }
 }
