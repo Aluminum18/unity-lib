@@ -35,6 +35,6 @@ public class SequentialAction : MonoBehaviour
 [System.Serializable]
 public class ActionInSequence
 {
-    public UnityEvent action;
     public float startAfter;
+    public UnityEvent action;
 }

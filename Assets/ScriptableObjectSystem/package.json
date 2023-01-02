@@ -1,0 +1,12 @@
+{
+	"name": "com.aluminum.sosystem",
+	"displayName": "SOVariableAndEvent",
+	"author": "Aluminum",
+	"version": "0.0.1",
+	"unity": "2018.4",
+	"description": "SO variables and events",
+	"license": "None",
+	"dependency": 
+	{
+	}
+}
