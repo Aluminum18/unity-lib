@@ -1,14 +1,20 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
-using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using Cysharp.Threading;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class DoTweenAnimation : MonoBehaviour
 {
     [SerializeField]
     private bool _doTweenOnEnable = false;
+    [SerializeField]
+    private bool _allowSeftInteruptTween = false;
+    [SerializeField]
+    private bool _backToOriginWhenFinishTween = false;
     [SerializeField]
     private GameObject _go;
     [SerializeField]
@@ -28,13 +34,31 @@ public class DoTweenAnimation : MonoBehaviour
     private bool _useCurrentAsFrom = false;
     [SerializeField]
     private Vector3 _from;
+    public Vector3 From
+    {
+        set
+        {
+            _from = value;
+        }
+    }
     [SerializeField]
     private Vector3 _to;
+    public Vector3 To
+    {
+        set
+        {
+            _to = value;
+        }
+    }
 
     [SerializeField]
     private UnityEvent _onStartTween;
     [SerializeField]
     private UnityEvent _onFinishTween;
+
+    [Header("Inspec")]
+    [SerializeField]
+    private bool _isTweening = false;
 
     public enum AnimType
     {
@@ -44,15 +68,15 @@ public class DoTweenAnimation : MonoBehaviour
         FadeSprite,
         FadeUI,
         MoveLocal,
-        RotateLocal
+        RotateLocal,
+        ShakeMove, 
+        ShakeScale
     }
 
-    public void DoTweenWithDelay(float delay)
+    public async UniTaskVoid DoTweenWithDelay(float delay)
     {
-        Observable.Timer(System.TimeSpan.FromSeconds(delay)).Subscribe(_ =>
-        {
-            DoTween();
-        });
+        await UniTask.Delay(TimeSpan.FromSeconds(delay));
+        DoTween();
     }
 
     public void DoTween()
@@ -62,7 +86,14 @@ public class DoTweenAnimation : MonoBehaviour
             _go = gameObject;
         }
 
+        if (!_allowSeftInteruptTween && _isTweening)
+        {
+            return;
+        }
+
+        _go.transform.DOKill(true);
         _onStartTween.Invoke();
+        _isTweening = true;
 
         switch (_animType)
         {
@@ -73,7 +104,14 @@ public class DoTweenAnimation : MonoBehaviour
                         _go.transform.position = _from;
                     }
 
-                    _go.transform.DOMove(_to, _duration).SetEase(_easeType).onComplete = () => _onFinishTween.Invoke();
+                    _go.transform.DOMove(_to, _duration).SetEase(_easeType).onComplete = () =>
+                    {   
+                        if (_backToOriginWhenFinishTween)
+                        {
+                            _go.transform.position = _from;
+                        }
+                        OnFinishTween();
+                    };
                     break;
                 }
             case AnimType.MoveLocal:
@@ -82,7 +120,13 @@ public class DoTweenAnimation : MonoBehaviour
                     {
                         _go.transform.localPosition = _from;
                     }
-                    _go.transform.DOLocalMove(_to, _duration).SetEase(_easeType).onComplete = () => _onFinishTween.Invoke();
+                    _go.transform.DOLocalMove(_to, _duration).SetEase(_easeType).onComplete = () => {
+                        if (_backToOriginWhenFinishTween)
+                        {
+                            _go.transform.localPosition = _to;
+                        }
+                        OnFinishTween();
+                    };
                     break;
                 }
             case AnimType.Zoom:
@@ -91,7 +135,13 @@ public class DoTweenAnimation : MonoBehaviour
                     {
                         _go.transform.localScale = _from;
                     }
-                    _go.transform.DOScale(_to, _duration).SetEase(_easeType).onComplete = () => _onFinishTween.Invoke();
+                    _go.transform.DOScale(_to, _duration).SetEase(_easeType).onComplete = () => {
+                        if (_backToOriginWhenFinishTween)
+                        {
+                            _go.transform.localScale = _from;
+                        }
+                        OnFinishTween();
+                    };
                     break;
                 }
             case AnimType.FadeSprite:
@@ -109,7 +159,14 @@ public class DoTweenAnimation : MonoBehaviour
                         spriteRenderer.color = bufferColor;
                     }
 
-                    spriteRenderer.DOFade(_to.x, _duration).SetEase(_easeType).onComplete = () => _onFinishTween.Invoke();
+                    spriteRenderer.DOFade(_to.x, _duration).SetEase(_easeType).onComplete = () => 
+                    {
+                        if (_backToOriginWhenFinishTween)
+                        {
+                            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, _from.x);
+                        }
+                        OnFinishTween();
+                    };
                     break;
                 }
             case AnimType.FadeUI:
@@ -127,7 +184,14 @@ public class DoTweenAnimation : MonoBehaviour
                         canvasGroup.alpha = _from.x;
                     }
 
-                    canvasGroup.DOFade(_to.x, _duration).SetEase(_easeType).onComplete = () => _onFinishTween.Invoke();
+                    canvasGroup.DOFade(_to.x, _duration).SetEase(_easeType).onComplete = () => 
+                    {
+                        if (_backToOriginWhenFinishTween)
+                        {
+                            canvasGroup.alpha = _from.x;
+                        }
+                        OnFinishTween();
+                    };
                     break;
                 }
             case AnimType.RotateLocal:
@@ -137,12 +201,49 @@ public class DoTweenAnimation : MonoBehaviour
                         _go.transform.localRotation = Quaternion.Euler(_from);
                     }
 
-                    _go.transform.DOLocalRotate(_to, _duration).SetEase(_easeType).onComplete = () => _onFinishTween.Invoke();
+                    _go.transform.DOLocalRotate(_to, _duration).SetEase(_easeType).onComplete = () => 
+                    {
+                        if (_backToOriginWhenFinishTween)
+                        {
+                            _go.transform.localRotation = Quaternion.Euler(_from);
+                        }
+                        OnFinishTween();
+                    };
+                    break;
+                }
+            case AnimType.ShakeMove:
+                {
+                    _go.transform.DOShakePosition(_duration, _to).onComplete = () =>
+                    {
+                        if (_backToOriginWhenFinishTween)
+                        {
+                            _go.transform.localRotation = Quaternion.Euler(_from);
+                        }
+                        OnFinishTween();
+                    };
+                    break;
+                }
+            case AnimType.ShakeScale:
+                {
+                    _go.transform.DOShakeScale(_duration, _to).onComplete = () =>
+                    {
+                        if (_backToOriginWhenFinishTween)
+                        {
+                            _go.transform.localRotation = Quaternion.Euler(_from);
+                        }
+                        OnFinishTween();
+                    };
                     break;
                 }
             default:
                 break;
         }
+    }
+
+    private void OnFinishTween()
+    {
+        _isTweening = false;
+        _onFinishTween.Invoke();
     }
 
     private void OnEnable()
