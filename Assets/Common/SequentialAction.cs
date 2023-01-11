@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,8 +12,12 @@ public class SequentialAction : MonoBehaviour
     [SerializeField]
     private List<ActionInSequence> _actions;
 
+    public void StartActions()
+    {
+        UniTask_StartActions().Forget();
+    }
 
-    public async UniTask StartActions()
+    private async UniTaskVoid UniTask_StartActions()
     {
         for (int i = 0; i < _actions.Count; i++)
         {
@@ -23,11 +27,11 @@ public class SequentialAction : MonoBehaviour
         }
     }
 
-    private async void OnEnable()
+    private void OnEnable()
     {
         if (_startOnEnable)
         {
-            await StartActions();
+            UniTask_StartActions().Forget();
         }
     }
 }
