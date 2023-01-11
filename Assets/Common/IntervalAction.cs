@@ -1,57 +1,64 @@
-﻿using System.Collections;
+using Cysharp.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
-using UniRx;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class IntervalAction : MonoBehaviour
 {
     [SerializeField]
-    private bool _startOnEnable = false;
+    private bool _startActionOnEnable = false;
     [SerializeField]
-    private float _interval;
-    public float Interval
-    {
-        set
-        {
-            _interval = value;
-        }
-    }
+    private bool _doActionBeforeFirstInterval = false;
+    [SerializeField][Tooltip("time unit in second")]
+    private float _interval = 1f;
     [SerializeField]
     private UnityEvent _action;
 
-    private CompositeDisposable _cd = new CompositeDisposable();
+    private bool _isOnInterval = false;
+    private CancellationTokenSource _intervalActionToken;
 
     public void StartIntervalAction()
     {
-        if (_interval <= 0f)
-        {
-            return;
-        }
-
-        _cd.Clear();
-        Observable.Interval(System.TimeSpan.FromSeconds(_interval)).Subscribe(_ =>
-        {
-            _action.Invoke();
-        }).AddTo(_cd);
+        UniTask_StartIntervalAction().Forget();
     }
 
     public void StopIntervalAction()
     {
-        _cd.Clear();
+        _intervalActionToken?.Cancel();
+        _isOnInterval = false;
+    }
+
+    private async UniTaskVoid UniTask_StartIntervalAction()
+    {
+        _intervalActionToken?.Cancel();
+        _intervalActionToken = new CancellationTokenSource();
+
+        _isOnInterval = true;
+
+        if (_doActionBeforeFirstInterval)
+        {
+            _action.Invoke();
+        }
+
+        while (_isOnInterval)
+        {
+            await UniTask.Delay(System.TimeSpan.FromSeconds(_interval), cancellationToken: _intervalActionToken.Token);
+            _action.Invoke();
+        }
     }
 
     private void OnEnable()
     {
-        if (!_startOnEnable)
+        if (_startActionOnEnable)
         {
-            return;
+            StartIntervalAction();
         }
-        StartIntervalAction();
     }
 
     private void OnDisable()
     {
-        _cd.Clear();
+        StopIntervalAction();
     }
 }
