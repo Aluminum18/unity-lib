@@ -1,6 +1,8 @@
-﻿using System.Collections;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
+using System.Collections;
 using System.Collections.Generic;
-using UniRx;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -23,11 +25,10 @@ public class FeededAction : MonoBehaviour
     private float _tempDisableAfter;
 
     private bool _tempDisable;
-
-    private CompositeDisposable _cd = new CompositeDisposable();
-
     private bool _initFeed = true;
-    
+
+    private CancellationTokenSource updateToken;
+
     public void Feed()
     {
         if (_initFeed)
@@ -37,7 +38,6 @@ public class FeededAction : MonoBehaviour
         }
 
         _tempDisableAfter = _aliveTimeAfterFeed;
-
         _tempDisable = false;
 
         _onFeededAction.Invoke();
@@ -45,28 +45,31 @@ public class FeededAction : MonoBehaviour
 
     public void PermanentDisableAction()
     {
-        _cd.Clear();
+        updateToken?.Cancel();
         _initFeed = true;
     }
 
     private void InitFeed()
     {
-        TrackLifeTime();
+        TrackLifeTime().Forget();
         _initAction.Invoke();
     }
 
-    private void TrackLifeTime()
+    private async UniTaskVoid TrackLifeTime()
     {
-        Observable.EveryUpdate().Subscribe(_ =>
+        updateToken?.Cancel();
+        updateToken = new();
+
+        await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(updateToken.Token))
         {
             if (_tempDisableAfter <= 0f && !_tempDisable)
             {
                 _tempDisable = true;
-                _tempDisableAction.Invoke();               
+                _tempDisableAction.Invoke();
             }
 
             _tempDisableAfter -= Time.deltaTime;
-        }).AddTo(_cd);
+        }
     }
 
     private void OnEnable()
