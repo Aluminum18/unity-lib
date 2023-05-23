@@ -1,11 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BaseScriptableObjectVariable <T> : ScriptableObject
 {
     [TextArea(1, 10)]
     public string Explanation;
+
+    [SerializeField]
+    private HideFlags _hideFlag = HideFlags.None;
 
     [SerializeField]
     protected T _value;
@@ -35,12 +40,35 @@ public class BaseScriptableObjectVariable <T> : ScriptableObject
         }
     }
 
+    public void SetValueWithoutNotify(T value)
+    {
+        _value = value;
+    }
+
     protected virtual bool IsSetNewValue(T value)
     {
         return true;
     }
 
     private void OnEnable()
+    {
+        hideFlags = _hideFlag;
+        SetInitValue();
+
+        SceneManager.sceneLoaded += SetInitValueOnLoadedScene;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= SetInitValueOnLoadedScene;
+    }
+
+    private void SetInitValueOnLoadedScene(Scene arg0, LoadSceneMode arg1)
+    {
+        SetInitValue();
+    }
+
+    private void SetInitValue()
     {
         switch (_valueWhenInit)
         {

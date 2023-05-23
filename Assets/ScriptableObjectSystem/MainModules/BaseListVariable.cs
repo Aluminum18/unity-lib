@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class BaseListVariable<T> : ScriptableObject
 {
+    [SerializeField][TextArea(1, 10)]
+    private string _explanation;
     [SerializeField]
     protected bool _dontDuplicateValue = false;
     [SerializeField]
@@ -18,11 +20,11 @@ public abstract class BaseListVariable<T> : ScriptableObject
     public delegate void OnListCountChangedDel();
     public event OnListCountChangedDel OnListChanged;
 
-    public List<T> List
+    public T[] Array
     {
         get
         {
-            return _list;
+            return _list.ToArray();
         }
     }
 
@@ -117,6 +119,19 @@ public abstract class BaseListVariable<T> : ScriptableObject
         _list.Clear();
         OnListChanged?.Invoke();
     }
+
+    public T this[int index]
+    {
+        get
+        {
+            return _list[index];
+        }
+        set
+        {
+            _list[index] = value;
+        }
+    }
+
 
     protected virtual bool Compare(T item1, T item2)
     {

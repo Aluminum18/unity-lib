@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(FloatVariable))]
-[CanEditMultipleObjects]
-public class FloatVariableEditor : Editor
+[CustomEditor(typeof(LongVariable))]
+public class LongVariableEditor : Editor
 {
     private SerializedProperty _value;
 
@@ -19,8 +18,8 @@ public class FloatVariableEditor : Editor
         DrawDefaultInspector();
         EditorGUILayout.PropertyField(_value);
 
-        var myTarget = (FloatVariable)target;
-        myTarget.Value = _value.floatValue;
+        var myTarget = (LongVariable)target;
+        myTarget.Value = _value.intValue;
 
         serializedObject.ApplyModifiedProperties();
     }

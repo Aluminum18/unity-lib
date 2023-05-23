@@ -68,7 +68,10 @@ public class IntegerVariableToText : MonoBehaviour
         float bufferValue = _lastValue;
         _lastValue = newValue;
 
-        _updateToken.Cancel();
+        if (_updateToken != null)
+        {
+            _updateToken.Cancel();
+        }
         _updateToken = new CancellationTokenSource();
 
         await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(_updateToken.Token))

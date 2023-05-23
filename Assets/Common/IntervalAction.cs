@@ -30,6 +30,7 @@ public class IntervalAction : MonoBehaviour
         _isOnInterval = false;
     }
 
+
     private async UniTaskVoid UniTask_StartIntervalAction()
     {
         _intervalActionToken?.Cancel();
