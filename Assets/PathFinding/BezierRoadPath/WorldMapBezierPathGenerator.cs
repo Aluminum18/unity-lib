@@ -1,53 +1,53 @@
-using PathCreation;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+//using PathCreation;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-public class WorldMapBezierPathGenerator : MonoSingleton<WorldMapBezierPathGenerator>
-{
-    [Header("Reference - Read")]
-    [SerializeField]
-    private WorldMapBezierRoadPathList _paths;
+//public class WorldMapBezierPathGenerator : MonoSingleton<WorldMapBezierPathGenerator>
+//{
+//    [Header("Reference - Read")]
+//    [SerializeField]
+//    private WorldMapBezierRoadPathList _paths;
 
-    [Header("Config")]
-    [SerializeField]
-    private GameObject _pathTemplate;
-    [SerializeField]
-    private Transform _pathHolder;
+//    [Header("Config")]
+//    [SerializeField]
+//    private GameObject _pathTemplate;
+//    [SerializeField]
+//    private Transform _pathHolder;
 
-    private Dictionary<int, PathCreator> _pathCreatorDict = new();
+//    private Dictionary<int, PathCreator> _pathCreatorDict = new();
 
-    public void GeneratePaths()
-    {
-        _pathCreatorDict.Clear();
+//    public void GeneratePaths()
+//    {
+//        _pathCreatorDict.Clear();
 
-        var paths = _paths.Paths;
-        for (int i = 0; i < paths.Count; i++)
-        {
-            var path = paths[i];
-            var pathObject = Instantiate(_pathTemplate, path.center, Quaternion.identity, _pathHolder);
-            var pathCreator = pathObject.GetComponent<PathCreator>();
-            pathCreator.bezierPath = new BezierPath(path.bezierPoints, space: PathSpace.xz);
-            pathCreator.bezierPath.AutoControlLength = path.controlSpacing;
+//        var paths = _paths.Paths;
+//        for (int i = 0; i < paths.Count; i++)
+//        {
+//            var path = paths[i];
+//            var pathObject = Instantiate(_pathTemplate, path.center, Quaternion.identity, _pathHolder);
+//            var pathCreator = pathObject.GetComponent<PathCreator>();
+//            pathCreator.bezierPath = new BezierPath(path.bezierPoints, space: PathSpace.xz);
+//            pathCreator.bezierPath.AutoControlLength = path.controlSpacing;
 
-            _pathCreatorDict.Add(path.pathId, pathCreator);
-        }
-    }
+//            _pathCreatorDict.Add(path.pathId, pathCreator);
+//        }
+//    }
 
-    public PathCreator GetPathInstance(int pathId)
-    {
-        _pathCreatorDict.TryGetValue(pathId, out var path);
-        if (path == null)
-        {
-            Logger.LogError($"No path instance for id [{pathId}]");
-        }
+//    public PathCreator GetPathInstance(int pathId)
+//    {
+//        _pathCreatorDict.TryGetValue(pathId, out var path);
+//        if (path == null)
+//        {
+//            Logger.LogError($"No path instance for id [{pathId}]");
+//        }
 
-        return path;
-    }
+//        return path;
+//    }
 
-    protected override void DoOnStart()
-    {
-        base.DoOnStart();
-        GeneratePaths();
-    }
-}
+//    protected override void DoOnStart()
+//    {
+//        base.DoOnStart();
+//        GeneratePaths();
+//    }
+//}

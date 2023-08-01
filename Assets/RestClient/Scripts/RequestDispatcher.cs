@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using Google.FlatBuffers;
+//using Google.FlatBuffers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -147,10 +147,10 @@ public class RequestDispatcher : MonoSingleton<RequestDispatcher>
 
     private IResponseRawDataConverter<T> GetResponseConverter<T>(Type responseType)
     {
-        if (typeof(IFlatbufferObject).IsAssignableFrom(responseType))        
-        {
-            return new FlatBufferResponseConverter<T>();
-        }
+        //if (typeof(IFlatbufferObject).IsAssignableFrom(responseType))        
+        //{
+        //    return new FlatBufferResponseConverter<T>();
+        //}
 
         return new JsonResponseConverter<T>();
     }
