@@ -68,16 +68,13 @@
     <Compile Include="Assets\Common\ObjectPooling\ObjectSpawner.cs" />
     <Compile Include="Assets\RestClient\Scripts\RequestSender.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\StringVariableToText.cs" />
-    <Compile Include="Assets\ScriptableObjectSystem\GameEvents\MultiGameEventsListener.cs" />
     <Compile Include="Assets\UICreator\LeanTween\LTSeq.cs" />
-    <Compile Include="Assets\ScriptableObjectSystem\GameEvents\GameEventListenerWithBoolCondition.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\BoolVariableValueTrack.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\Vector3VariableToPosition.cs" />
     <Compile Include="Assets\RestClient\Scripts\RequestHelper.cs" />
     <Compile Include="Assets\UICreator\LeanTween\LeanAudio.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\RotateToDirection.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\IntegerVariableToColor.cs" />
-    <Compile Include="Assets\ScriptableObjectSystem\GameEvents\GameEvent.cs" />
     <Compile Include="Assets\Common\SequentialAction.cs" />
     <Compile Include="Assets\SceneLoading\SceneTransitionObject.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\FloatVariableToText.cs" />
@@ -88,7 +85,6 @@
     <Compile Include="Assets\Common\Transform\RestrictMovementArea.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\FloatVariableToSlider.cs" />
     <Compile Include="Assets\UICreator\Scripts\UIElement.cs" />
-    <Compile Include="Assets\ScriptableObjectSystem\GameEvents\GameEventListener.cs" />
     <Compile Include="Assets\UICreator\Scripts\UIPanel.cs" />
     <Compile Include="Assets\Common\MaterialUtils\MaterialSwitcher.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\FloatLinearChange.cs" />
@@ -104,7 +100,6 @@
     <Compile Include="Assets\ScriptableObjectSystem\Utils\ConfigVariables.cs" />
     <Compile Include="Assets\UICreator\LeanTween\LeanTest.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\FloatVariableToFillImage.cs" />
-    <Compile Include="Assets\ScriptableObjectSystem\GameEvents\GameEventListenerWithIntCondition.cs" />
     <Compile Include="Assets\UICreator\Scripts\UIController.cs" />
     <Compile Include="Assets\RestClient\Scripts\RequestContants.cs" />
     <Compile Include="Assets\PathFinding\BezierRoadPath\RoadBezierDataExporter.cs" />
