@@ -9,15 +9,18 @@ public class SOMessage : ScriptableObject
     /// <summary>
     /// Recommend to call this method once per life time of object
     /// </summary>
-    public void Listen(Action action, MonoBehaviour listeningObject)
+    public void Listen(Action action, MonoBehaviour listeningObject, SOMessageBroadcaster targetBroadcaster)
     {
-        var broadcaster = listeningObject.GetComponentInParent<SOMessageBroadcaster>();
-        if (broadcaster == null)
+        if (targetBroadcaster == null)
         {
-            Debug.LogWarning($"You are listening a message that will never be sent from root parent", listeningObject);
+            targetBroadcaster = listeningObject.GetComponentInParent<SOMessageBroadcaster>();
+        }
+        if (targetBroadcaster == null)
+        {
+            Debug.LogWarning($"You are listening a message that will never be sent from any broadcaster", listeningObject);
             return;
         }
 
-        broadcaster.SetUpMessageAction(this, listeningObject, action);
+        targetBroadcaster.SetUpMessageAction(this, listeningObject, action);
     }
 }

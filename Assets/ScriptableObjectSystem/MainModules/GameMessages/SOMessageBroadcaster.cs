@@ -8,7 +8,7 @@ public class SOMessageBroadcaster : MonoBehaviour
     [SerializeField]
     private bool _logWhenBroadcastMessage = false;
     [SerializeField]
-    private SOMessage[] _managedMessages;
+    private List<SOMessage> _managedMessages;
     private Dictionary<SOMessage, List<(MonoBehaviour, Action)>> _messageAndActionDict = new();
 
     public void BroadcastMessage(SOMessage message)
@@ -42,7 +42,7 @@ public class SOMessageBroadcaster : MonoBehaviour
 
     public void BroadcastAllMessage()
     {
-        for (int i = 0; i < _managedMessages.Length; i++)
+        for (int i = 0; i < _managedMessages.Count; i++)
         {
             BroadcastMessage(_managedMessages[i]);
         }
@@ -65,4 +65,16 @@ public class SOMessageBroadcaster : MonoBehaviour
 
         actions.Add(messageAndAction);
     }
+
+#if UNITY_EDITOR
+    public void EditorOnly_AddMessageFromListener(SOMessage message)
+    {
+        if (_managedMessages.Contains(message))
+        {
+            return;
+        }
+
+        _managedMessages.Add(message);
+    }
+#endif
 }
