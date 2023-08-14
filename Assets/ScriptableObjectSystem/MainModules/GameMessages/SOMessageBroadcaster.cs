@@ -9,9 +9,9 @@ public class SOMessageBroadcaster : MonoBehaviour
     private bool _logWhenBroadcastMessage = false;
     [SerializeField]
     private List<SOMessage> _managedMessages;
-    private Dictionary<SOMessage, List<(MonoBehaviour, Action)>> _messageAndActionDict = new();
+    private Dictionary<SOMessage, List<(MonoBehaviour, SOMessage.SOMessageAction)>> _messageAndActionDict = new();
 
-    public void BroadcastMessage(SOMessage message)
+    public void BroadcastMessage(SOMessage message, params object[] args)
     {
         _messageAndActionDict.TryGetValue(message, out var actions);
         if (actions == null)
@@ -36,19 +36,21 @@ public class SOMessageBroadcaster : MonoBehaviour
                 Debug.Log($"Message [{message.name}] has been sent to [{associatedObj.gameObject.name}]");
             }
 
-            actions[i].Item2.Invoke();
+            if (args == null || args.Length == 0)
+            {
+                actions[i].Item2.Invoke();
+                return;
+            }
+            actions[i].Item2.Invoke(args);
         }
     }
 
-    public void BroadcastAllMessage()
+    public void BroadcastMessage(SOMessage message)
     {
-        for (int i = 0; i < _managedMessages.Count; i++)
-        {
-            BroadcastMessage(_managedMessages[i]);
-        }
+        BroadcastMessage(message, null);
     }
 
-    public void SetUpMessageAction(SOMessage message, MonoBehaviour associatedObject, Action action)
+    public void SetUpMessageAction(SOMessage message, MonoBehaviour associatedObject, SOMessage.SOMessageAction action)
     {
         _messageAndActionDict.TryGetValue(message, out var actions);
         if (actions == null)
@@ -75,6 +77,14 @@ public class SOMessageBroadcaster : MonoBehaviour
         }
 
         _managedMessages.Add(message);
+    }
+
+    public void EditorOnly_BroadcastAllMessage()
+    {
+        for (int i = 0; i < _managedMessages.Count; i++)
+        {
+            BroadcastMessage(_managedMessages[i]);
+        }
     }
 #endif
 }

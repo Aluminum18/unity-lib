@@ -11,7 +11,7 @@ public class SOMessageBroadcasterEditor : Editor
         if (GUILayout.Button("Broadcast all messages"))
         {
             var myTarget = (SOMessageBroadcaster)target;
-            myTarget.BroadcastAllMessage();
+            myTarget.EditorOnly_BroadcastAllMessage();
         }
         DrawDefaultInspector();
     }

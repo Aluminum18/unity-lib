@@ -414,6 +414,8 @@ MonoBehaviour:
   _managedMessages:
   - {fileID: 11400000, guid: ad123db5f284f43419218c2d4a2bca98, type: 2}
   - {fileID: 11400000, guid: c66345890196cac4784417365eab281f, type: 2}
+  - {fileID: 11400000, guid: 10106d5a7136cf54ebaa2a947b3c1950, type: 2}
+  - {fileID: 11400000, guid: 1d3b2b9d3125d4b4789af285dc823bc4, type: 2}
 --- !u!4 &214309410
 Transform:
   m_ObjectHideFlags: 0
@@ -612,6 +614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49ecf37db642aa441a769872cd9b0054, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _targetBroadcaster: {fileID: 0}
   _listenedMessages:
   - {fileID: 11400000, guid: c66345890196cac4784417365eab281f, type: 2}
   _onReceivedMessage:
@@ -1247,6 +1250,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 602962789}
+  - component: {fileID: 602962790}
   m_Layer: 0
   m_Name: GameObject (3)
   m_TagString: Untagged
@@ -1269,6 +1273,25 @@ Transform:
   m_Father: {fileID: 214309410}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &602962790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602962788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49ecf37db642aa441a769872cd9b0054, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetBroadcaster: {fileID: 0}
+  _listenedMessages:
+  - {fileID: 11400000, guid: 10106d5a7136cf54ebaa2a947b3c1950, type: 2}
+  - {fileID: 11400000, guid: 1d3b2b9d3125d4b4789af285dc823bc4, type: 2}
+  _onReceivedMessage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &630337171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1448,6 +1471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49ecf37db642aa441a769872cd9b0054, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _targetBroadcaster: {fileID: 0}
   _listenedMessages:
   - {fileID: 11400000, guid: ad123db5f284f43419218c2d4a2bca98, type: 2}
   _onReceivedMessage:
@@ -3491,6 +3515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49ecf37db642aa441a769872cd9b0054, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _targetBroadcaster: {fileID: 0}
   _listenedMessages:
   - {fileID: 11400000, guid: ad123db5f284f43419218c2d4a2bca98, type: 2}
   - {fileID: 11400000, guid: c66345890196cac4784417365eab281f, type: 2}

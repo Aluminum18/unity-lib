@@ -6,10 +6,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SOMessage", menuName = "ScriptableObjectSystem/SOMessage")]
 public class SOMessage : ScriptableObject
 {
+    public delegate void SOMessageAction(params object[] args);
     /// <summary>
     /// Recommend to call this method once per life time of object
     /// </summary>
-    public void Listen(Action action, MonoBehaviour listeningObject, SOMessageBroadcaster targetBroadcaster)
+    public void Listen(SOMessageAction action, MonoBehaviour listeningObject, SOMessageBroadcaster targetBroadcaster)
     {
         if (targetBroadcaster == null)
         {

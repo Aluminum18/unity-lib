@@ -23,7 +23,7 @@ public class SOMessageListener : MonoBehaviour
         }
     }
 
-    private void MessageHandler()
+    private void MessageHandler(object[] args)
     {
         _onReceivedMessage.Invoke();
     }
