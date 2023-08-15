@@ -13,6 +13,11 @@ public class SOMessageBroadcasterEditor : Editor
             var myTarget = (SOMessageBroadcaster)target;
             myTarget.EditorOnly_BroadcastAllMessage();
         }
+        if (GUILayout.Button("Broadcast message by name"))
+        {
+            var myTarget = (SOMessageBroadcaster)target;
+            myTarget.EditorOnly_BroadcastMessageByName(myTarget._editorOnly_messageToBroadcast);
+        }
         DrawDefaultInspector();
     }
 }

@@ -7,11 +7,12 @@ public class SOMessageBroadcaster : MonoBehaviour
 {
     [SerializeField]
     private bool _logWhenBroadcastMessage = false;
+    public string _editorOnly_messageToBroadcast;
     [SerializeField]
     private List<SOMessage> _managedMessages;
     private Dictionary<SOMessage, List<(MonoBehaviour, SOMessage.SOMessageAction)>> _messageAndActionDict = new();
 
-    public void BroadcastMessage(SOMessage message, params object[] args)
+    public void BroadcastSOMessage(SOMessage message, params object[] args)
     {
         _messageAndActionDict.TryGetValue(message, out var actions);
         if (actions == null)
@@ -45,9 +46,9 @@ public class SOMessageBroadcaster : MonoBehaviour
         }
     }
 
-    public void BroadcastMessage(SOMessage message)
+    public void BroadcastSOMessage(SOMessage message)
     {
-        BroadcastMessage(message, null);
+        BroadcastSOMessage(message, null);
     }
 
     public void SetUpMessageAction(SOMessage message, MonoBehaviour associatedObject, SOMessage.SOMessageAction action)
@@ -83,7 +84,19 @@ public class SOMessageBroadcaster : MonoBehaviour
     {
         for (int i = 0; i < _managedMessages.Count; i++)
         {
-            BroadcastMessage(_managedMessages[i]);
+            BroadcastSOMessage(_managedMessages[i]);
+        }
+    }
+
+    public void EditorOnly_BroadcastMessageByName(string message)
+    {
+        for (int i = 0; i < _managedMessages.Count; i++)
+        {
+            if (_managedMessages[i].name == message)
+            {
+                BroadcastSOMessage(_managedMessages[i]);
+                return;
+            }
         }
     }
 #endif
