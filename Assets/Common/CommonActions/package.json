@@ -1,0 +1,13 @@
+{
+	"name": "com.aluminum.commonactions",
+	"displayName": "Common Actions",
+	"author": "Aluminum",
+	"version": "0.0.1",
+	"unity": "2019.3",
+	"description": "Fquently used async actions",
+	"license": "None",
+	"dependency": 
+	{
+		"com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask"
+	}
+}

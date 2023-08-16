@@ -56,7 +56,7 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Common\FeededAction.cs" />
+    <Compile Include="Assets\Common\CommonActions\FeededAction.cs" />
     <Compile Include="Assets\Common\MathUtils.cs" />
     <Compile Include="Assets\Common\Extensions\MaterialExtensions.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\IntegerVariableValueTrack.cs" />
@@ -69,7 +69,7 @@
     <Compile Include="Assets\ScriptableObjectSystem\Utils\Vector3VariableToPosition.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\RotateToDirection.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\IntegerVariableToColor.cs" />
-    <Compile Include="Assets\Common\SequentialAction.cs" />
+    <Compile Include="Assets\Common\CommonActions\SequentialAction.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\FloatVariableToText.cs" />
     <Compile Include="Assets\Common\Transform\TrackScreenPosition.cs" />
     <Compile Include="Assets\Common\Transform\RestrictMovementArea.cs" />
@@ -90,7 +90,7 @@
     <Compile Include="Assets\PathFinding\BezierRoadPath\WorldMapBezierPathGenerator.cs" />
     <Compile Include="Assets\ScriptableObjectSystem\Utils\IntegerVariableToText.cs" />
     <Compile Include="Assets\Collection\CollectionUtils.cs" />
-    <Compile Include="Assets\Common\IntervalAction.cs" />
+    <Compile Include="Assets\Common\CommonActions\IntervalAction.cs" />
     <Compile Include="Assets\PathFinding\BezierRoadPath\WorldMapRoadMeshList.cs" />
     <Compile Include="Assets\Common\TimeUtils.cs" />
     <Compile Include="Assets\Common\TextFileIO.cs" />
@@ -107,6 +107,7 @@
     <Compile Include="Assets\SceneLoading\Scripts\SceneLoader.cs" />
     <Compile Include="Assets\SceneLoading\Scripts\SceneInBuild.cs" />
     <Compile Include="Assets\SceneLoading\Scripts\SceneLoadTransition.cs" />
+    <Compile Include="Assets\ScriptableObjectSystem\Examples\EventRaiser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
