@@ -877,6 +877,10 @@
       <Project>{3FBE555D-17B9-7632-7F7D-53A1CA03C55F}</Project>
       <Name>RestClient</Name>
     </ProjectReference>
+    <ProjectReference Include="CommonAsyncActions.csproj">
+      <Project>{67BE3BED-1B39-79A7-551D-16F18D079114}</Project>
+      <Name>CommonAsyncActions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

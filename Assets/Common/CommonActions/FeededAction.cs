@@ -11,18 +11,18 @@ public class FeededAction : MonoBehaviour
     [SerializeField]
     private bool _startOnEnable = false;
     [SerializeField]
-    private float _aliveTimeAfterFeed = 0.2f;
+    private float _fullTime = 0.2f;
 
     [SerializeField]
-    private UnityEvent _initAction;
+    private UnityEvent _firstTimeFeededAction;
     [SerializeField]
     private UnityEvent _onFeededAction;
     [SerializeField]
-    private UnityEvent _tempDisableAction;
+    private UnityEvent _onHungryAction;
 
     [Header("Inspec")]
     [SerializeField]
-    private float _tempDisableAfter;
+    private float _hungryAfter;
 
     private bool _tempDisable;
     private bool _initFeed = true;
@@ -37,7 +37,7 @@ public class FeededAction : MonoBehaviour
             _initFeed = false;
         }
 
-        _tempDisableAfter = _aliveTimeAfterFeed;
+        _hungryAfter = _fullTime;
         _tempDisable = false;
 
         _onFeededAction.Invoke();
@@ -52,7 +52,7 @@ public class FeededAction : MonoBehaviour
     private void InitFeed()
     {
         TrackLifeTime().Forget();
-        _initAction.Invoke();
+        _firstTimeFeededAction.Invoke();
     }
 
     private async UniTaskVoid TrackLifeTime()
@@ -62,13 +62,13 @@ public class FeededAction : MonoBehaviour
 
         await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(updateToken.Token))
         {
-            if (_tempDisableAfter <= 0f && !_tempDisable)
+            if (_hungryAfter <= 0f && !_tempDisable)
             {
                 _tempDisable = true;
-                _tempDisableAction.Invoke();
+                _onHungryAction.Invoke();
             }
 
-            _tempDisableAfter -= Time.deltaTime;
+            _hungryAfter -= Time.deltaTime;
         }
     }
 
