@@ -62,7 +62,7 @@ public class ObjectPoolTest : MonoBehaviour
 }
 ```
 Clone object will automatically return to Pool when it is disabled
-  - **ObjectSpawner:** No coding Object Spawner. You can use ScriptableObject Event as 'Spawn Command' (see Example gif in [SequencialActions](sequentialactions) to spawn recycle object without coding.
+   - **ObjectSpawner:** No coding Object Spawner. You can use ScriptableObject Event as 'Spawn Command' (see Example gif in [SequencialActions](sequentialactions) to spawn recycle object without coding.
     
 ![image](https://github.com/Aluminum18/unity-lib/assets/14157400/74a8669c-0889-4ac9-87db-8a59f59c1a4b)
 
