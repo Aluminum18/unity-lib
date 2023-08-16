@@ -72,5 +72,5 @@ Frequently used features
   
    **SpawnRandomObject()**: Spawn randomly clone of objects in _Random Obj List_. Position and Parent similar to Spawn()
   
-   **SpawnWithRandomRange**: Spawn _Object In Pool's_ clone at random position within a box area which has Spawn Pos as center and half of _Random Range Pos_ as size
+   **SpawnWithRandomRange()**: Spawn _Object In Pool's_ clone at random position within a box area which has Spawn Pos as center and half of _Random Range Pos_ as size
   
