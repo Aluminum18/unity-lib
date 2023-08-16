@@ -1,0 +1,13 @@
+{
+	"name": "com.aluminum.restclient",
+	"displayName": "RestClient",
+	"author": "Aluminum",
+	"version": "0.0.1",
+	"unity": "2019.3",
+	"description": "Wrapper for UnityWebRequest",
+	"license": "None",
+	"dependency": 
+	{
+		"com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask"
+	}
+}
