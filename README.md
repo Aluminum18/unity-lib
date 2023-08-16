@@ -50,25 +50,27 @@ Frequently used features
 ## Object Pooling
 * Git url: https://github.com/Aluminum18/unity-lib.git?path=Assets/Common/ObjectPooling
 * Description: Helper for minimizing effort to spawn recycle objects
+  
   - **MultiplePools:** Single contact point for spawning any object
-```csharp
-public class ObjectPoolTest : MonoBehaviour
-{
-    public int poolSize = 10;
-    public void SpawnOject(GameObject templateObject)
+  ```csharp
+    public class ObjectPoolTest : MonoBehaviour
     {
-        var clone = MultiplePools.Instance.SpawnGameObject(templateObject, poolSize);
+        public int poolSize = 10;
+        public void SpawnOject(GameObject templateObject)
+        {
+            var clone = MultiplePools.Instance.SpawnGameObject(templateObject, poolSize);
+            //  Cloned object will automatically return to Pool when it is disabled
+        }
     }
-}
-```
-Clone object will automatically return to Pool when it is disabled
-   - **ObjectSpawner:** No coding Object Spawner. You can use ScriptableObject Event as 'Spawn Command' (see Example gif in [SequencialActions](sequentialactions) to spawn recycle object without coding.
-    
-![image](https://github.com/Aluminum18/unity-lib/assets/14157400/74a8669c-0889-4ac9-87db-8a59f59c1a4b)
+  ```
+  - **ObjectSpawner:** No coding Object Spawner. You can use ScriptableObject Event as 'Spawn Command' (see Example gif in [SequencialActions](sequentialactions) to spawn recycle object without coding.
 
-  **Spawn()**: Spawn _Object In Pool's_ clone at _SpawnPos_ (world space) and in _Parent Transform_
+    
+  ![image](https://github.com/Aluminum18/unity-lib/assets/14157400/74a8669c-0889-4ac9-87db-8a59f59c1a4b)
+
+   **Spawn()**: Spawn _Object In Pool's_ clone at _SpawnPos_ (world space) and in _Parent Transform_
   
-  **SpawnRandomObject()**: Spawn randomly clone of objects in _Random Obj List_. Position and Parent similar to Spawn()
+   **SpawnRandomObject()**: Spawn randomly clone of objects in _Random Obj List_. Position and Parent similar to Spawn()
   
-  **SpawnWithRandomRange**: Spawn _Object In Pool's_ clone at random position within a box area which has Spawn Pos as center and half of _Random Range Pos_ as size
+   **SpawnWithRandomRange**: Spawn _Object In Pool's_ clone at random position within a box area which has Spawn Pos as center and half of _Random Range Pos_ as size
   
