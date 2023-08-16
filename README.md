@@ -3,8 +3,10 @@ Frequently used features
 # Content
 - [ScriptableObject Variables and Events](#scriptableobject-variables-and-events)
 - [Common Async Actions](#common-async-actions)
+- [Object Pooling](#object-pooling)
 
 ## ScriptableObject Variables and Events
+* Git url: https://github.com/Aluminum18/unity-lib.git?path=Assets/ScriptableObjectSystem/MainModules
 * Description:
   + Implement [this original idea](https://www.youtube.com/watch?v=raQ3iHhE_Kk&ab_channel=Unity)
   + Additional: 
@@ -22,12 +24,12 @@ Frequently used features
       
       **Raise With Params button:** Allow raising event with parameter(s) from Inspector. Declare you parameter in **Event Params** by specifying class name and its value.
 
-    - **ScriptableObject Message:** Similar with ScriptableObject Event except a Message Listener only listens messages from specified MessageBroadcaster while EventListener always listen specified Events regardless Raiser. 
-      
-* git url: https://github.com/Aluminum18/unity-lib.git?path=Assets/ScriptableObjectSystem/MainModules
+    - **ScriptableObject Message:** Similar to ScriptableObject Event except a Message Listener only listens messages from specified MessageBroadcaster while EventListener always listen specified Events regardless Raiser. 
 
 ## Common Async Actions
-* Description: Bring async actions to inspector to reduce coding effort. Built by using [UniTask](https://github.com/Cysharp/UniTask).
+* Git url: https://github.com/Aluminum18/unity-lib.git?path=Assets/Common/CommonActions
+* Dependency: [UniTask](https://github.com/Cysharp/UniTask)
+* Description: Bring async actions to inspector to reduce coding effort.
   - **SequentialActions:** Invoke actions sequentially with configurable timing.
     ![SequentialActions (online-video-cutter com)](https://github.com/Aluminum18/unity-lib/assets/14157400/1f032da7-1d84-4521-b0ed-5c90135f0044)
   - **FeededAction:** Check following example for easier getting FeededAction idea :)
@@ -43,4 +45,30 @@ Frequently used features
   - **IntervalAction**: As its name, specified action is invoked every **Interval** second(s)
     ![image](https://github.com/Aluminum18/unity-lib/assets/14157400/07828fc3-0958-48cd-b3fc-9d3e25df1316)
 
-    Tip: You can use ScriptableObject Event as 'Start Action' command for reducing coding effort (like Example gif in [SequencialActions](sequentialactions))
+    Tip: You can use ScriptableObject Event as 'Start Action' command for reducing coding effort (like Example gif in [SequencialActions](sequentialactions))  
+    
+## Object Pooling
+* Git url: https://github.com/Aluminum18/unity-lib.git?path=Assets/Common/ObjectPooling
+* Description: Helper for minimizing effort to spawn recycle objects
+  - **MultiplePools:** Single contact point for spawning any object
+```csharp
+public class ObjectPoolTest : MonoBehaviour
+{
+    public int poolSize = 10;
+    public void SpawnOject(GameObject templateObject)
+    {
+        var clone = MultiplePools.Instance.SpawnGameObject(templateObject, poolSize);
+    }
+}
+```
+Clone object will automatically return to Pool when it is disabled
+  - **ObjectSpawner:** No coding Object Spawner. You can use ScriptableObject Event as 'Spawn Command' (see Example gif in [SequencialActions](sequentialactions) to spawn recycle object without coding.
+    
+![image](https://github.com/Aluminum18/unity-lib/assets/14157400/74a8669c-0889-4ac9-87db-8a59f59c1a4b)
+
+  **Spawn()**: Spawn _Object In Pool's_ clone at _SpawnPos_ (world space) and in _Parent Transform_
+  
+  **SpawnRandomObject()**: Spawn randomly clone of objects in _Random Obj List_. Position and Parent similar to Spawn()
+  
+  **SpawnWithRandomRange**: Spawn _Object In Pool's_ clone at random position within a box area which has Spawn Pos as center and half of _Random Range Pos_ as size
+  
