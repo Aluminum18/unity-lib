@@ -6,8 +6,8 @@
 	"unity": "2019.3",
 	"description": "Wrapper for UnityWebRequest",
 	"license": "None",
-	"dependency": 
+	"dependencies": 
 	{
-		"com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask"
+		"com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.3.3"
 	}
 }
