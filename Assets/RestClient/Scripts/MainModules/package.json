@@ -8,6 +8,5 @@
 	"license": "None",
 	"dependencies": 
 	{
-		"com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.3.3"
 	}
 }
