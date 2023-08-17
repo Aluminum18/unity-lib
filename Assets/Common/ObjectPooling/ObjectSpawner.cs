@@ -9,7 +9,7 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField]
     private List<GameObject> _randomObjList;
     [SerializeField]
-    private Transform _parrentTransform;
+    private Transform _parentTransform;
     [SerializeField]
     private Transform _spawnPos;
     [SerializeField]
@@ -78,9 +78,9 @@ public class ObjectSpawner : MonoBehaviour
         _bufferVector.z = Random.Range(-_randomRangePos.z, _randomRangePos.z);
 
         var go = SpawnAndReturnObject();
-        if (_parrentTransform != null)
+        if (_parentTransform != null)
         {
-            go.transform.parent = _parrentTransform;
+            go.transform.parent = _parentTransform;
         }
 
         if (_spawnPos == null)
@@ -99,7 +99,7 @@ public class ObjectSpawner : MonoBehaviour
 
     private void SetupObjectTransform(GameObject go)
     {
-        go.transform.parent = _parrentTransform;
+        go.transform.parent = _parentTransform;
 
         if (_spawnPos == null)
         {

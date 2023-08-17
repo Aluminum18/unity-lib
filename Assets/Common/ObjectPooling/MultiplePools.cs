@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class MultiplePools : MonoSingleton<MultiplePools>
 {
-    [SerializeField]
-    private Transform _poolPos;
-    [SerializeField]
-    private int _defaultPoolSize = 10;
-
     // key = object InstanceId
     Dictionary<int, PoolInMultiplePool> _pools = new Dictionary<int, PoolInMultiplePool>();
 
@@ -19,7 +14,7 @@ public class MultiplePools : MonoSingleton<MultiplePools>
         if (pool == null)
         {
             pool = ScriptableObject.CreateInstance<PoolInMultiplePool>();
-            pool.Init(go, _poolPos.position, poolSize == 0 ? _defaultPoolSize : poolSize);
+            pool.Init(go, poolSize);
 
             _pools[go.GetInstanceID()] = pool;
         }
@@ -31,15 +26,13 @@ public class MultiplePools : MonoSingleton<MultiplePools>
 public class PoolInMultiplePool : ScriptableObject
 {
     private GameObject _rootObject;
-    private Vector3 _poolPos;
     private int _poolSize;
 
     private Stack<GameObject> _available = new Stack<GameObject>();
 
-    public void Init(GameObject go, Vector3 poolPos, int limit)
+    public void Init(GameObject go, int limit)
     {
         _rootObject = go;
-        _poolPos = poolPos;
         _poolSize = limit;
     }
 

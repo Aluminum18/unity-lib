@@ -1,0 +1,12 @@
+{
+	"name": "com.aluminum.objectpooling",
+	"displayName": "Object Pooling",
+	"author": "Aluminum",
+	"version": "0.0.1",
+	"unity": "2018.4",
+	"description": "Object Pooling and Object Spawner",
+	"license": "None",
+	"dependency": 
+	{
+	}
+}
