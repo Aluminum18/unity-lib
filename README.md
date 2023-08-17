@@ -1,5 +1,5 @@
 # unity-lib
-Frequently used features
+Frequently used logic
 # Content
 - [ScriptableObject Variables and Events](#scriptableobject-variables-and-events)
 - [Common Async Actions](#common-async-actions)
