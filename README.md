@@ -4,11 +4,12 @@ Frequently used features
 - [ScriptableObject Variables and Events](#scriptableobject-variables-and-events)
 - [Common Async Actions](#common-async-actions)
 - [Object Pooling](#object-pooling)
+- [UnityWebRequestWrapper](#unitywebrequest-wrapper)
 
 ## ScriptableObject Variables and Events
 * Git url: https://github.com/Aluminum18/unity-lib.git?path=Assets/ScriptableObjectSystem/MainModules
 * Description:
-  + Implement [this original idea](https://www.youtube.com/watch?v=raQ3iHhE_Kk&ab_channel=Unity)
+  + Implement [ScriptableObject architecture](https://www.youtube.com/watch?v=raQ3iHhE_Kk&ab_channel=Unity) which helps code becomes modular, editable and debuggable.
   + Additional: 
     - **ScriptableObject Event:** allow passing parameter when raising event; add editor script for better debugging.
       
@@ -73,4 +74,25 @@ Frequently used features
    **SpawnRandomObject()**: Spawn randomly clone of objects in _Random Obj List_. Position and Parent similar to Spawn()
   
    **SpawnWithRandomRange()**: Spawn _Object In Pool's_ clone at random position within a box area which has Spawn Pos as center and half of _Random Range Pos_ as size
-  
+
+  ## UnityWebRequest Wrapper
+  * Git url: https://github.com/Aluminum18/unity-lib.git?path=Assets/RestClient/Scripts/MainModules
+  * Dependency: [UniTask](https://github.com/Cysharp/UniTask)
+  * Description: Simplify sending UnityWebRequest logic. Support converting Json and Flatbuffer data type
+    ```csharp
+    public async UniTaskVoid DoSomeRequests()
+    {
+        string url = "request url";
+        string tokenIfAny = "sample token";
+        Tuple<string, string> headerIfAny = new("header1", "headerValue1");
+
+        var getResponseData = await RequestSenderAsync.SendGetRequest(url, tokenIfAny, headerIfAny);
+        JsonResponse yourGetResponse = ResponseDataConverter.ConvertJson<JsonResponse>(getResponseData.rawdata);
+        // Convert logic uses built-in JsonUtility so your JsonResponse must be a Serialized class/struct
+
+        byte[] postData = new byte[1024];
+        var postResponse = await RequestSenderAsync.SendPostRequest(url, postData, tokenIfAny, headerIfAny);
+        FlatBufferResponse yourPostResponse = ResponseDataConverter.ConvertFlatBuffer<FlatBufferResponse>(postResponse.rawdata);
+        // Your FlatBufferResponse must be a struct implements IFlatbufferObject
+    }
+    ```
