@@ -9,7 +9,7 @@ Frequently used logic
 ## ScriptableObject Variables and Events
 * Git url: https://github.com/Aluminum18/unity-lib.git?path=Assets/ScriptableObjectSystem/MainModules
 * Description:
-  + Implement [ScriptableObject architecture](https://www.youtube.com/watch?v=raQ3iHhE_Kk&ab_channel=Unity) which helps code becomes modular, editable and debuggable.
+  + Implement [this idea](https://www.youtube.com/watch?v=raQ3iHhE_Kk&ab_channel=Unity) which helps code becomes modular, editable and debuggable.
   + Additional: 
     - **ScriptableObject Event:** allow passing parameter when raising event; add editor script for better debugging.
       
