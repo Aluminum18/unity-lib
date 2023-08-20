@@ -1,11 +1,11 @@
 # unity-lib
 Frequently used logic
 # Content
-- [UI Panel](https://github.com/Aluminum18/UICreatorDotween) (large enough to move to other repo)
 - [ScriptableObject Variables and Events](#scriptableobject-variables-and-events)
 - [Common Async Actions](#common-async-actions)
 - [Object Pooling](#object-pooling)
 - [UnityWebRequest Wrapper](#unitywebrequest-wrapper)
+- [UI Panel](https://github.com/Aluminum18/UICreatorDotween) (large enough to move to other repo)
 
 ## ScriptableObject Variables and Events
 * Git url: https://github.com/Aluminum18/unity-lib.git?path=Assets/ScriptableObjectSystem/MainModules
