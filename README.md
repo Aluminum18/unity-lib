@@ -5,11 +5,12 @@ Frequently used logic
 - [Common Async Actions](#common-async-actions)
 - [Object Pooling](#object-pooling)
 - [UnityWebRequest Wrapper](#unitywebrequest-wrapper)
+- [UI Panel Lib](https://github.com/Aluminum18/UICreatorDotween) (large enough to move to other repo)
 
 ## ScriptableObject Variables and Events
 * Git url: https://github.com/Aluminum18/unity-lib.git?path=Assets/ScriptableObjectSystem/MainModules
 * Description:
-  + Implement [this idea](https://www.youtube.com/watch?v=raQ3iHhE_Kk&ab_channel=Unity) which helps code becomes modular, editable and debuggable.
+  + Implement [this idea](https://www.youtube.com/watch?v=raQ3iHhE_Kk&ab_channel=Unity) which reduces the use of global manager to help code becomes modular, editable and debuggable.
   + Additional: 
     - **ScriptableObject Event:** allow passing parameter when raising event; add editor script for debugging.
       
