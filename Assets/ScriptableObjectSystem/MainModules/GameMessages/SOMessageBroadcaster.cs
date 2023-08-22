@@ -7,7 +7,8 @@ public class SOMessageBroadcaster : MonoBehaviour
 {
     [SerializeField]
     private bool _logWhenBroadcastMessage = false;
-    public string _editorOnly_messageToBroadcast;
+    public string editorOnly_messageToBroadcast;
+    public int editorOnly_messageIndexToBroadcast;
     [SerializeField]
     private List<SOMessage> _managedMessages;
     private Dictionary<SOMessage, List<(MonoBehaviour, SOMessage.SOMessageAction)>> _messageAndActionDict = new();
@@ -98,6 +99,11 @@ public class SOMessageBroadcaster : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void EditorOnly_BroadcastMessageByIndex(int index)
+    {
+        BroadcastSOMessage(_managedMessages[index % _managedMessages.Count]);
     }
 #endif
 }

@@ -15,4 +15,6 @@ MonoBehaviour:
   _eventExplanation: 
   _logWhenRaise: 0
   _subcribers: []
-  _eventParams: []
+  _eventParams:
+  - className: 
+    valueOrJson: 
