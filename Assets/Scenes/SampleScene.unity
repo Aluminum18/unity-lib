@@ -184,7 +184,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _logWhenBroadcastMessage: 1
-  _editorOnly_messageToBroadcast: 
+  editorOnly_messageToBroadcast: 
+  editorOnly_messageIndexToBroadcast: 0
   _managedMessages:
   - {fileID: 11400000, guid: ad123db5f284f43419218c2d4a2bca98, type: 2}
   - {fileID: 11400000, guid: c66345890196cac4784417365eab281f, type: 2}
@@ -526,6 +527,69 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &375542982
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 375542983}
+  - component: {fileID: 375542984}
+  m_Layer: 0
+  m_Name: MultipleListeners
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &375542983
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375542982}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1043988053}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &375542984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375542982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6773b65a380d8244abd7c9e2b5790de6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _broadcaster: {fileID: 1043988052}
+  _messageAndActionPairs:
+  - messages:
+    - {fileID: 11400000, guid: ad123db5f284f43419218c2d4a2bca98, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: 
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -934,7 +998,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _logWhenBroadcastMessage: 1
-  _editorOnly_messageToBroadcast: 
+  editorOnly_messageToBroadcast: 
+  editorOnly_messageIndexToBroadcast: 0
   _managedMessages:
   - {fileID: 11400000, guid: ad123db5f284f43419218c2d4a2bca98, type: 2}
   - {fileID: 11400000, guid: c66345890196cac4784417365eab281f, type: 2}
@@ -954,6 +1019,7 @@ Transform:
   m_Children:
   - {fileID: 1026235730}
   - {fileID: 1936553519}
+  - {fileID: 375542983}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
