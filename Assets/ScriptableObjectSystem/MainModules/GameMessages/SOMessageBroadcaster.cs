@@ -53,7 +53,7 @@ public class SOMessageBroadcaster : MonoBehaviour
             if (args == null || args.Length == 0)
             {
                 actions[i].Item2.Invoke();
-                return;
+                continue;
             }
             actions[i].Item2.Invoke(args);
         }
