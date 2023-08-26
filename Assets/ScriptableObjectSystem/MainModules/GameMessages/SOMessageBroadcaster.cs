@@ -13,6 +13,18 @@ public class SOMessageBroadcaster : MonoBehaviour
     private List<SOMessage> _managedMessages;
     private Dictionary<SOMessage, List<(MonoBehaviour, SOMessage.SOMessageAction)>> _messageAndActionDict = new();
 
+    [Header("Inspec")]
+    [SerializeField]
+    private List<ListenerInfo> _listeners = new();
+
+    [Serializable]
+    private class ListenerInfo
+    {
+        public MonoBehaviour listener;
+        public SOMessage interestMessage;
+        public string responseAction;
+    }
+
     public void BroadcastSOMessage(SOMessage message, params object[] args)
     {
         _messageAndActionDict.TryGetValue(message, out var actions);
@@ -68,6 +80,7 @@ public class SOMessageBroadcaster : MonoBehaviour
         }
 
         actions.Add(messageAndAction);
+        _listeners.Add(new() { listener = associatedObject, interestMessage = message, responseAction = action.Method.Name });
     }
 
 #if UNITY_EDITOR
