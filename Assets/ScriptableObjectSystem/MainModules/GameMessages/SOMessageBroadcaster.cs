@@ -64,6 +64,11 @@ public class SOMessageBroadcaster : MonoBehaviour
         BroadcastSOMessage(message, null);
     }
 
+    public void BroadcastAndIncludeMessage(SOMessage message)
+    {
+        BroadcastSOMessage(message, message);
+    }
+
     public void SetUpMessageAction(SOMessage message, MonoBehaviour associatedObject, SOMessage.SOMessageAction action)
     {
         _messageAndActionDict.TryGetValue(message, out var actions);
