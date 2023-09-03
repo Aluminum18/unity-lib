@@ -27,6 +27,10 @@ public class SOMessageBroadcaster : MonoBehaviour
 
     public void BroadcastSOMessage(SOMessage message, params object[] args)
     {
+        if (message == null)
+        {
+            return;
+        }
         _messageAndActionDict.TryGetValue(message, out var actions);
         if (actions == null)
         {
