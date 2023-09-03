@@ -34,10 +34,6 @@ public class SOMessageBroadcaster : MonoBehaviour
             return;
         }
         
-        if (actions == null)
-        {
-            actions = new();
-        }
         for (int i = 0; i < actions.Count; i++)
         {
             MonoBehaviour associatedObj = actions[i].Item1;

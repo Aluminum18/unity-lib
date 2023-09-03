@@ -68,7 +68,7 @@ public class GameEvent : ScriptableObject
 #if UNITY_EDITOR
     private void OnDisable()
     {
-        _subcribers.Clear();
+        _subcribers?.Clear();
     }
 
     public void SubcribeEditor(EventActionDel action, string subcriber)
