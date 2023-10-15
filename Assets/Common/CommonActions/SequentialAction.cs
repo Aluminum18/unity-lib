@@ -9,7 +9,7 @@ public class SequentialAction : MonoBehaviour
     [SerializeField]
     private bool _startOnEnable = false;
     [SerializeField]
-    private PlayerLoopTiming _sequenceTiming = PlayerLoopTiming.Update;
+    private bool _ignoreTimeScale = false;
 
     [SerializeField]
     private List<ActionInSequence> _actions;
@@ -24,7 +24,7 @@ public class SequentialAction : MonoBehaviour
         for (int i = 0; i < _actions.Count; i++)
         {
             var action = _actions[i];
-            await UniTask.Delay(System.TimeSpan.FromSeconds(action.startAfter), delayTiming: _sequenceTiming);
+            await UniTask.Delay(System.TimeSpan.FromSeconds(action.startAfter), ignoreTimeScale: _ignoreTimeScale);
             action.action.Invoke();
         }
     }
