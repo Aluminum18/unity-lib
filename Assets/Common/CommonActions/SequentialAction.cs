@@ -8,6 +8,8 @@ public class SequentialAction : MonoBehaviour
 {
     [SerializeField]
     private bool _startOnEnable = false;
+    [SerializeField]
+    private PlayerLoopTiming _sequenceTiming = PlayerLoopTiming.Update;
 
     [SerializeField]
     private List<ActionInSequence> _actions;
@@ -22,7 +24,7 @@ public class SequentialAction : MonoBehaviour
         for (int i = 0; i < _actions.Count; i++)
         {
             var action = _actions[i];
-            await UniTask.Delay(System.TimeSpan.FromSeconds(action.startAfter));
+            await UniTask.Delay(System.TimeSpan.FromSeconds(action.startAfter), delayTiming: _sequenceTiming);
             action.action.Invoke();
         }
     }
