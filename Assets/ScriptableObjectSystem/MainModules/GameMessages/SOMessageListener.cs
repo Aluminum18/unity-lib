@@ -48,7 +48,9 @@ public class SOMessageListener : MonoBehaviour
                 continue;
             }
 
+#if UNITY_EDITOR
             _targetBroadcaster.EditorOnly_AddMessageFromListener(_listenedMessages[i]);
+#endif
         }
     }
 }
