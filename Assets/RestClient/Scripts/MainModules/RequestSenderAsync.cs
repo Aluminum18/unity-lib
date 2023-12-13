@@ -49,6 +49,7 @@ public class RequestSenderAsync
         {
             responseCode = request.responseCode,
             rawdata = request.downloadHandler.data,
+            text = request.downloadHandler.text
         };
     }
 }
@@ -57,4 +58,5 @@ public class WebRequestResponse
 {
     public long responseCode;
     public byte[] rawdata;
+    public string text;
 }
