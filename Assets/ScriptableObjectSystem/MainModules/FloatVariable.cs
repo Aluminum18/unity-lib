@@ -20,4 +20,9 @@ public class FloatVariable : BaseScriptableObjectVariable<float>
             return _change;
         }
     }
+
+    public void Increase(float increment)
+    {
+        Value += increment;
+    }
 }
