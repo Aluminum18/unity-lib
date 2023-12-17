@@ -12,6 +12,8 @@ public class FeededAction : MonoBehaviour
     private bool _startOnEnable = false;
     [SerializeField]
     private float _fullTime = 0.2f;
+    [SerializeField]
+    private bool _ignoreTimeScale = false;
 
     [SerializeField]
     private UnityEvent _firstTimeFeededAction;
@@ -68,7 +70,7 @@ public class FeededAction : MonoBehaviour
                 _onHungryAction.Invoke();
             }
 
-            _hungryAfter -= Time.deltaTime;
+            _hungryAfter -= _ignoreTimeScale ? Time.unscaledDeltaTime : Time.deltaTime;
         }
     }
 
