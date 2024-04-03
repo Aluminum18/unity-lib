@@ -20,6 +20,8 @@ public abstract class BaseListVariable<T> : ScriptableObject
     public delegate void OnListCountChangedDel();
     public event OnListCountChangedDel OnListChanged;
 
+    public int Count => _list.Count;
+
     public T[] Array
     {
         get
@@ -43,23 +45,6 @@ public abstract class BaseListVariable<T> : ScriptableObject
         }
 
         OnListChanged?.Invoke();
-    }
-
-    public void CompareWithNewList(List<T> newList)
-    {
-        if (_list.Count != newList.Count)
-        {
-            OnListChanged?.Invoke();
-        }
-
-        for (int i = 0; i < _list.Count; i++)
-        {
-            if (!Compare(_list[i], newList[i]))
-            {
-                OnListChanged?.Invoke();
-                break;
-            }
-        }
     }
 
     public void Add(T item)
@@ -132,7 +117,6 @@ public abstract class BaseListVariable<T> : ScriptableObject
         }
     }
 
-
     protected virtual bool Compare(T item1, T item2)
     {
         return false;
@@ -156,5 +140,22 @@ public abstract class BaseListVariable<T> : ScriptableObject
         }
 
         _list.Clear();
+    }
+
+    public void EditorOnly_CompareWithNewList(List<T> newList)
+    {
+        if (_list.Count != newList.Count)
+        {
+            OnListChanged?.Invoke();
+        }
+
+        for (int i = 0; i < _list.Count; i++)
+        {
+            if (!Compare(_list[i], newList[i]))
+            {
+                OnListChanged?.Invoke();
+                break;
+            }
+        }
     }
 }
