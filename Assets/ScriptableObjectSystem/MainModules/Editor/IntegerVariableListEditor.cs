@@ -33,7 +33,7 @@ public class IntegerListVariableEditor : Editor
             valueList.Add(_listValue.GetArrayElementAtIndex(i).intValue);
         }
 
-        myTarget.CompareWithNewList(valueList);
+        myTarget.EditorOnly_CompareWithNewList(valueList);
 
         serializedObject.ApplyModifiedProperties();
     }
