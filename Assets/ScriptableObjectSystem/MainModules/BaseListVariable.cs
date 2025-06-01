@@ -93,6 +93,11 @@ public abstract class BaseListVariable<T> : ScriptableObject
 
         OnListChanged?.Invoke();
     }
+	
+	public void Insert(int index, T val)
+	{
+		_list.Insert(index, val);
+	}
 
     public bool Contain(T item)
     {
